@@ -1,20 +1,75 @@
-import { Cctv, Computer, Globe, Stars } from "lucide-react";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+
+export const products = [
+  {
+    icon: "https://cdn1.iconfinder.com/data/icons/web-and-internet-outline/64/web-and-internet-02-512.png",
+    title: "Internet Service",
+    description: [
+      "Internet Dedicated",
+      "Internet Broadboard",
+      "Dedicated Shared",
+    ],
+  },
+  {
+    icon: "https://www.svgrepo.com/show/291910/ethernet.svg",
+    title: "Infrastructure Network",
+    description: [
+      "Local Loop (MPLS L2/L3)",
+      "Radio Trunking",
+      "VPN-IP",
+      "V-SAT",
+    ],
+  },
+  {
+    icon: "/images/data-center.png",
+    title: "Data Center",
+    description: ["Colocation", "Dedicated Server"],
+  },
+  {
+    icon: "/images/telephone.png",
+    title: "Telephone",
+    description: ["VoIP", "PSTN", "Cloud PABX"],
+  },
+  {
+    icon: "/images/manage.png",
+    title: "Manage Services",
+    description: [
+      "Network Managed",
+      "Security System",
+      "Internet Of Things (IoT)",
+      "Firewall System",
+      // "Command Center (Monitoring)",
+    ],
+  },
+  {
+    icon: "/images/software.png",
+    title: "Software Development",
+    description: [
+      "AI (Artificial Intelligence)",
+      "Mobile Application (Android/iOS)",
+      "Web Application",
+    ],
+  },
+];
 
 export default function Services() {
   return (
     <section
-      id="services"
-      className="relative flex w-full flex-col items-center justify-between px-4 py-24 lg:px-28"
+      id="about"
+      className="relative flex w-full flex-col items-center justify-between gap-12 px-4 py-12 lg:px-24 lg:py-32"
     >
-      <div className="mb-12 flex flex-col items-center gap-4 text-center">
-        <div className="text-primary border-primary flex max-w-fit items-center gap-2 rounded-full border-2 px-4 py-0.5">
-          <h3 className="font-medium">Services</h3>
-          <Stars className="size-4" />
+      <div className="flex flex-col items-center space-y-4 text-center">
+        <div className="flex items-center gap-2">
+          <ChevronsRight className="text-primary size-4" />
+          <p className="text-secondary font-semibold tracking-[2px] uppercase">
+            OUR SERVICES
+          </p>
+          <ChevronsLeft className="text-primary size-4" />
         </div>
-        <h2 className="max-w-xs text-3xl font-medium lg:max-w-none lg:text-5xl">
-          We Provide
-          <span className="text-primary"> Innovative Solutions</span>
+        <h2 className="text-3xl font-medium lg:text-5xl">
+          We Offer Satisfactions
         </h2>
         <p className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base">
           Achieve seamless technology and advanced networks with IT solutions
@@ -22,80 +77,36 @@ export default function Services() {
           control, and long-term reliability.
         </p>
       </div>
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="h-full rounded-2xl border p-6 md:row-span-2">
-          <div className="relative h-32 w-full lg:h-[410px]">
-            <Image
-              src="/images/hero.png"
-              alt="Hero"
-              className="object-cover object-center"
-              fill
-            />
-          </div>
-          <div className="flex gap-6">
-            <div className="bg-primary mt-2 flex size-14 items-center justify-center rounded-full">
-              <Cctv className="size-8 text-white" />
+      <div className="grid w-full grid-cols-1 gap-9 px-12 lg:grid-cols-3 lg:gap-9 lg:px-32">
+        {products.map((product, i) => (
+          <Link
+            href={`services#service-${i}`}
+            key={i}
+            className="via-primary relative flex h-64 w-full cursor-pointer flex-col items-center gap-3 overflow-hidden rounded-tr-4xl rounded-bl-4xl bg-gradient-to-tl from-red-700 to-red-700 p-4 pt-9 shadow-md transition-all duration-300 hover:scale-105 lg:h-80"
+          >
+            <div className="relative size-14 lg:size-24">
+              <Image
+                src={product.icon}
+                alt={"Illustration"}
+                fill
+                className="object-contain object-center brightness-0 invert"
+              />
             </div>
-            <div className="flex flex-1 flex-col justify-end">
-              <h3 className="mb-2 text-xl font-semibold">
-                Hardware Installation
-              </h3>
-              <p className="text-muted-foreground text-sm">
-                Providing hardware installation services for all your IT needs,
-                including servers, workstations, and network devices.
-              </p>
+            <h3 className="text-background text-center text-xl font-semibold lg:text-2xl">
+              {product.title}
+            </h3>
+            <div className="">
+              {product.description.map((index) => (
+                <div className="flex items-center gap-2" key={index}>
+                  <p className="text-xl text-white">-</p>
+                  <p className="text-background text-sm lg:text-base">
+                    {index}
+                  </p>
+                </div>
+              ))}
             </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border p-6">
-          <div className="relative h-32 w-full lg:h-[410px]">
-            <Image
-              src="/images/hero.png"
-              alt="Hero"
-              className="object-cover object-center"
-              fill
-            />
-          </div>
-          <div className="flex gap-6">
-            <div className="bg-primary mt-2 flex size-14 items-center justify-center rounded-full">
-              <Globe className="size-8 text-white" />
-            </div>
-            <div className="flex flex-1 flex-col justify-end">
-              <h3 className="mb-2 text-xl font-semibold">
-                Nework Configuration
-              </h3>
-              <p className="text-muted-foreground text-sm">
-                Providing hardware installation services for all your IT needs,
-                including servers, workstations, and network devices.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border p-6">
-          <div className="relative h-32 w-full lg:h-[410px]">
-            <Image
-              src="/images/hero.png"
-              alt="Hero"
-              className="object-cover object-center"
-              fill
-            />
-          </div>
-          <div className="flex gap-6">
-            <div className="bg-primary mt-2 flex size-14 items-center justify-center rounded-full">
-              <Computer className="size-8 text-white" />
-            </div>
-            <div className="flex flex-1 flex-col justify-end">
-              <h3 className="mb-2 text-xl font-semibold">Other IT Services</h3>
-              <p className="text-muted-foreground text-sm">
-                Providing hardware installation services for all your IT needs,
-                including servers, workstations, and network devices.
-              </p>
-            </div>
-          </div>
-        </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

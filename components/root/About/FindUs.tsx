@@ -24,7 +24,7 @@ export default function FindUs() {
       </div>
       <div className="relative flex h-80 w-full flex-1 items-center justify-center overflow-hidden rounded-md">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.47351487016!2d104.78739117449534!3d-2.9660298397682303!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3b77006ef8e1fd%3A0x3dffc0491764f9c5!2sPT.%20Taruna%20Anugerah%20Mandiri!5e0!3m2!1sid!2sid!4v1744704239240!5m2!1sid!2sid"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3605.7403343680603!2d104.79027099999999!3d-2.9662358999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3b77a4cfb5408f%3A0xa4dfd8d6ecb45d1c!2sPT%20MITRA%20INTEGRA%20TELEKOM!5e1!3m2!1sid!2sid!4v1751334663702!5m2!1sid!2sid"
           className="h-full w-full"
           allowFullScreen
           loading="lazy"

@@ -6,6 +6,29 @@ import {
 } from "@/components/ui/accordion";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
+const faqs = [
+  {
+    q: "What internet packages do you offer?",
+    a: "We offer various home and business internet packages, including high-speed fiber plans up to 1 Gbps.",
+  },
+  {
+    q: "How do I check if your service is available in my area?",
+    a: "You can check coverage by entering your address on our website or contacting our support team.",
+  },
+  {
+    q: "What is the installation process like?",
+    a: "A technician will visit your location, install the router, and ensure your internet is running smoothly.",
+  },
+  {
+    q: "What should I do if my internet is slow or not working?",
+    a: "Restart your router first. If the issue continues, contact our 24/7 support team for troubleshooting.",
+  },
+  {
+    q: "Do you provide a router or can I use my own?",
+    a: "We provide a free router for new installations, but you can use your own as long as it's compatible.",
+  },
+];
+
 export default function FAQ() {
   return (
     <section
@@ -26,8 +49,9 @@ export default function FAQ() {
             <span className="text-primary"> Your Questions</span>
           </h2>
         </div>
+
         <Accordion type="single" collapsible className="w-full space-y-2">
-          {[1, 2, 3, 4, 5].map((_, i) => (
+          {faqs.map((item, i) => (
             <AccordionItem
               key={i}
               className="bg-primary rounded-tl-md rounded-tr-4xl rounded-br-md rounded-bl-4xl px-6 py-2"
@@ -36,11 +60,11 @@ export default function FAQ() {
               <AccordionTrigger className="text-background text-base lg:text-lg">
                 <div className="flex items-center gap-6">
                   <p className="text-4xl font-bold">{i + 1}. </p>
-                  <p>How can I contact you?</p>
+                  <p>{item.q}</p>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-background">
-                Yes. It adheres to the WAI-ARIA design pattern.
+                {item.a}
               </AccordionContent>
             </AccordionItem>
           ))}

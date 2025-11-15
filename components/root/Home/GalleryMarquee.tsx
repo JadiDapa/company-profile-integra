@@ -39,7 +39,7 @@ export function MarqueeGallery({ data }: GalleryItemProps) {
           {repeatImages(data, 30).map((item, index) => (
             <Dialog key={index}>
               <DialogTrigger asChild>
-                <div className="relative mx-1 h-24 w-40 shrink-0 overflow-hidden rounded-sm lg:mx-2 lg:h-40 lg:w-72 lg:rounded-md">
+                <div className="relative mx-1 h-24 w-40 shrink-0 overflow-hidden rounded-sm lg:mx-2 lg:h-40 lg:w-72">
                   <Image
                     src={item.image as string}
                     alt={item.title}

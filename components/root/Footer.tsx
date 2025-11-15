@@ -29,16 +29,28 @@ const resourcesLinks = [
 
 const categoryLink = [
   {
-    label: "Headphone",
+    label: "Internet Services",
     link: "/",
   },
   {
-    label: "Speaker",
+    label: "Infrastructure Network",
     link: "/product",
   },
   {
-    label: "Earbuds",
+    label: "Data Center",
     link: "/categories",
+  },
+  {
+    label: "Telephone",
+    link: "/contact",
+  },
+  {
+    label: "Manage Services",
+    link: "/about",
+  },
+  {
+    label: "Software Development",
+    link: "/",
   },
 ];
 
@@ -75,10 +87,10 @@ export default function Footer() {
                 </figure>
               </figure>
               <div className="text-primary-foreground flex flex-col gap-1">
-                <h4 className="text-lg font-bold">2P8J+2VQ</h4>
+                <h4 className="text-lg font-bold">(0711) 710600</h4>
                 <p className="text-lg leading-relaxed tracking-wide lg:w-[70%]">
-                  Jl. Dwikora II No.1220, Demang Lebar Daun, Kec. Ilir Bar. I,
-                  Kota Palembang, Sumatera Selatan 30137
+                  Jl. R. E. Martadinata No.2091, 2 Ilir, Kec. Ilir Tim. II, Kota
+                  Palembang, Sumatera Selatan 30163
                 </p>
               </div>
               <div className="mt-4 flex">

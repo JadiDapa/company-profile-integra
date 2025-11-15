@@ -5,7 +5,8 @@ import Hero from "@/components/root/Home/Hero";
 import Activities from "@/components/root/Home/Activities";
 import Statistic from "@/components/root/Home/Statistic";
 import LocationCheck from "@/components/root/Home/LocationCheck";
-import Products from "@/components/root/Home/Products";
+// import Products from "@/components/root/Home/Products";
+import Services from "@/components/root/Home/Services";
 
 export default function Home() {
   return (
@@ -13,7 +14,8 @@ export default function Home() {
       <Hero />
       <Statistic />
       <LocationCheck />
-      <Products />
+      {/* <Products /> */}
+      <Services />
       <About />
       <Activities />
       <FAQ />

@@ -27,7 +27,7 @@ const links = [
   },
   {
     name: "CONTACT",
-    route: "/gallery",
+    route: "/contact",
   },
 ];
 
@@ -76,9 +76,13 @@ const Navbar = () => {
           <div key={link.name}>
             <Link
               href={link.route}
-              className={`hover:border-primary border-b-2 border-transparent text-lg transition ${
-                pathname === link.route ? "font-bold" : "font-medium"
-              }`}
+              className={cn(
+                "hover:border-primary border-b-2 border-transparent text-lg transition",
+                pathname === "/" ? "text-white" : "text-primary",
+                isScrolled && "text-primary",
+
+                pathname === link.route ? "font-bold" : "font-medium",
+              )}
             >
               {link.name}
             </Link>
@@ -91,7 +95,9 @@ const Navbar = () => {
         ))}
         <div
           className={`${
-            isScrolled ? "border-foreground" : "border-background"
+            isScrolled || pathname !== "/"
+              ? "border-foreground text-black"
+              : "border-background"
           } flex items-center gap-4 rounded-full border-2 px-4 py-1 pe-8 transition`}
         >
           <Search className="size-4" />
