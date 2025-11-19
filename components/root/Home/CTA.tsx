@@ -12,10 +12,10 @@ export default function CTA() {
       <div className="via-primary relative flex w-full flex-col items-center justify-between overflow-hidden rounded-2xl border bg-gradient-to-tl from-red-700 to-red-700 px-6 py-12 text-center text-white lg:flex-row lg:px-24 lg:py-24 lg:text-start">
         <div className="relative z-20 flex w-full flex-col gap-5">
           <h2 className="text-4xl font-medium">Want To Get Started?</h2>
-          <p className="text-background max-w-2xl">
-            Achieve seamless technology and advanced networks with IT solutions
-            tailored for modern infrastructure. Each solution supports growth,
-            control.
+          <p className="text-background max-w-xl">
+            Join us today and be a part of our exciting journey towards
+            innovation and excellence. Discover how our solutions can transform
+            your business and drive success in the digital age.
           </p>
           <div className="flex items-center justify-center gap-4 lg:justify-start">
             <Button className="text-primary hover:bg-primary flex h-10 w-36 items-center rounded-full border border-white bg-transparent px-6 py-2 hover:text-white">

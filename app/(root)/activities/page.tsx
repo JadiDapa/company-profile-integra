@@ -9,7 +9,7 @@ export default function ActivitiesPage() {
         page="Activities"
         title="This Is What We Do For"
         accent="All Of Them"
-        subtitle="Achieve seamless technology and advanced networks with IT solutions tailored for modern infrastructure. Each solution supports growth, control, and long-term"
+        subtitle="From community initiatives to innovative projects, we actively engage in activities that create impact, foster growth, and drive meaningful connections."
       />
       <LatestActivity title="" content="" image="" date="" category="" />
       <ActivityList />

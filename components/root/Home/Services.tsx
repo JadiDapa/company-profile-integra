@@ -72,9 +72,9 @@ export default function Services() {
           We Offer Satisfactions
         </h2>
         <p className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base">
-          Achieve seamless technology and advanced networks with IT solutions
-          tailored for modern infrastructure. Each solution supports growth,
-          control, and long-term reliability.
+          Explore our wide range of services designed to meet your connectivity
+          needs. From high-speed internet to advanced network solutions, we have
+          you covered.
         </p>
       </div>
       <div className="grid w-full grid-cols-1 gap-9 px-12 lg:grid-cols-3 lg:gap-9 lg:px-32">

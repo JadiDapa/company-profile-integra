@@ -22,7 +22,7 @@ const links = [
     route: "/services",
   },
   {
-    name: "REPORTS",
+    name: "ACTIVITIES",
     route: "/activities",
   },
   {

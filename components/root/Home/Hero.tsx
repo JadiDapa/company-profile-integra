@@ -61,9 +61,9 @@ export default function Hero() {
               With #Reliable Internet
             </span>
           </h1>
-          <p className="text-background mt-4 max-w-2xl text-sm lg:mt-8 lg:text-base">
-            Achieve seamless technology and advanced networks with IT solutions
-            tailored for modern infrastructure.
+          <p className="text-background mt-4 max-w-2xl lg:mt-8 lg:text-base">
+            Discover a new level of connectivity with high-speed, reliable
+            internet built to support every aspect of your digital lifestyle
           </p>
         </div>
 
@@ -86,7 +86,7 @@ export default function Hero() {
           </div>
 
           {/* Button */}
-          <Button className="bg-background/20 text-background h-9 w-60 rounded-full border px-24 py-2">
+          <Button className="bg-background/20 text-background h-9 w-60 rounded-full border px-24 py-2 transition hover:bg-white hover:text-black">
             <Link href="/about" className="flex items-center gap-2 text-lg">
               Discover More <ChevronRight className="size-5" />
             </Link>

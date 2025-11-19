@@ -1,4 +1,4 @@
-import { ChevronsRight } from "lucide-react";
+import { CheckCircleIcon, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 
 export default function About() {
@@ -18,18 +18,20 @@ export default function About() {
           Innovation Shape The Future
         </h2>
         <p className="text-background max-w-xs text-sm lg:max-w-xl lg:text-base">
-          Achieve seamless technology and advanced networks with IT solutions
-          tailored for modern infrastructure. Each solution supports growth,
-          control, and long-term reliability. We are committed to delivering
-          top-notch service and support
+          We are dedicated to creating innovative solutions that connect people
+          and empower businesses. By combining cutting-edge technology with a
+          customer-first approach, we deliver reliable and efficient services
         </p>
         <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {[1, 2, 3, 4].map((_, i) => (
+          {[
+            "Deliver innovative and reliable solutions",
+            "Ensure seamless connectivity for all users",
+            "Focus on customer satisfaction and support",
+            "Continuously improve with cutting-edge technology",
+          ].map((text, i) => (
             <div key={i} className="flex items-center gap-2 lg:items-start">
-              <div className="bg-background size-3 rounded-xs lg:mt-1 lg:size-4" />
-              <p className="text-background text-sm lg:text-base">
-                Provide top quality service backend
-              </p>
+              <CheckCircleIcon className="size-3 rounded-xs lg:mt-1 lg:size-5" />
+              <p className="text-background text-sm lg:text-base">{text}</p>
             </div>
           ))}
         </div>

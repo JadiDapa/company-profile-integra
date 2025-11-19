@@ -1,6 +1,5 @@
-import AboutUs from "@/components/root/About/AboutUs";
 import FindUs from "@/components/root/About/FindUs";
-import VisionMission from "@/components/root/About/VisionMission";
+import About from "@/components/root/Home/About";
 import PageHeader from "@/components/root/PageHeader";
 
 export default function AboutPage() {
@@ -10,10 +9,9 @@ export default function AboutPage() {
         page="About"
         title="This Is Our"
         accent="Story"
-        subtitle="Achieve seamless technology and advanced networks with IT solutions tailored for modern infrastructure. Each solution supports growth, control, and long-term"
+        subtitle="We are dedicated to creating innovative solutions that connect people and empower businesses. By combining technology with a customer-first approach, we deliver reliable and efficient services. Our goal is to shape a smarter, connected future for everyone."
       />
-      <AboutUs />
-      <VisionMission />
+      <About />
       <FindUs />
     </section>
   );

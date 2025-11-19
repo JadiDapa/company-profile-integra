@@ -66,8 +66,9 @@ export default function ServicePage() {
         page="Services"
         title="Neat Quality Provided"
         accent="For You"
-        subtitle="Achieve seamless technology and advanced networks with IT solutions tailored for modern infrastructure. Each solution supports growth, control, and long-term"
+        subtitle="We offer a range of reliable and innovative services designed to keep you connected, productive, and empowered. Each solution is crafted with quality, efficiency, and user satisfaction in mind."
       />
+
       <section>
         {products.map((product, index) => (
           <ServiceSection key={product.title} product={product} index={index} />

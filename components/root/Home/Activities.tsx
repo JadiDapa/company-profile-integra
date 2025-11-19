@@ -33,9 +33,9 @@ export default function Activities() {
           <span className="text-primary"> Activities</span>
         </h2>
         <p className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base">
-          Achieve seamless technology and advanced networks with IT solutions
-          tailored for modern infrastructure. Each solution supports growth,
-          control, and long-term reliability.
+          Stay updated with the latest activities and events organized by our
+          dedicated team. From community outreach programs to exciting
+          workshops, explore how we are making a difference together.
         </p>
       </div>
       <div className="w-full space-y-12">
@@ -55,10 +55,7 @@ export default function Activities() {
               {activities[0].title}
             </h1>
             <p className="text-muted-foreground line-clamp-3 text-sm lg:text-base">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Molestiae ipsam temporibus voluptates. Ut, atque porro repellendus
-              odit odio eligendi fugit, molestias similique dignissimos iste
-              veniam numquam!
+              {activities[0].content}
             </p>
             <div className="flex cursor-pointer items-center gap-2 lg:mb-4">
               <Link

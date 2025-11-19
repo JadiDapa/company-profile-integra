@@ -28,10 +28,9 @@ export default function LocationCheck() {
         <h2 className="max-w-2xl text-center text-3xl font-medium lg:text-end lg:text-5xl">
           Enjoy Best Unlimited Internet Connection In Your Area
         </h2>
-        <p className="text-muted-foreground max-w-3xl text-center text-sm lg:text-end lg:text-base">
-          Achieve seamless technology and advanced networks with IT solutions
-          tailored for modern infrastructure. Lorem ipsum dolor sit amet
-          consectetur.
+        <p className="text-muted-foreground max-w-2xl text-center text-sm lg:text-end lg:text-base">
+          Check if our reliable internet services are available in your area by
+          entering your address below. Stay connected with us wherever you are!
         </p>
         <div className="via-primary mt-8 w-full rounded-lg border bg-gradient-to-tl from-red-700 to-red-700 p-4">
           <div className="flex justify-between">
