@@ -9,25 +9,25 @@ const contactItems = [
     title: "Chat to sales",
     description: "Speak to our friendly team.",
     buttonText: "Chat to sales",
-    icon: <MessageSquare className="text-primary h-6 w-6" />,
+    icon: <MessageSquare className="text-primary size-24" />,
   },
   {
     title: "Chat to support",
     description: "We're here to help.",
     buttonText: "Chat to support",
-    icon: <Bell className="text-primary h-6 w-6" />,
+    icon: <Bell className="text-primary size-24" />,
   },
   {
     title: "Visit us",
     description: "Visit our office HQ.",
     buttonText: "Get directions",
-    icon: <MapPin className="text-primary h-6 w-6" />,
+    icon: <MapPin className="text-primary size-24" />,
   },
   {
     title: "Call us",
     description: "Mon–Fri from 8am to 5pm.",
     buttonText: "Call our team",
-    icon: <Phone className="text-primary h-6 w-6" />,
+    icon: <Phone className="text-primary size-24" />,
   },
 ];
 
@@ -37,9 +37,9 @@ export function Contacts() {
       id="contact"
       className="bg-primary/5 relative flex w-full flex-col items-center justify-between gap-16 px-4 py-12 lg:px-24 lg:py-32"
     >
-      <div className="flex w-full max-w-2xl flex-col items-center text-center lg:items-start lg:text-left">
-        <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-          Get in touch
+      <div className="flex w-full max-w-2xl flex-col items-center text-center lg:items-center">
+        <h2 className="text-center text-4xl font-bold tracking-tight md:text-5xl">
+          Contact Us!
         </h2>
         <p className="text-muted-foreground mt-2">
           Ready to help your company scale faster? Let’s chat about how we can
@@ -49,16 +49,19 @@ export function Contacts() {
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {contactItems.map((item, index) => (
-          <Card key={index} className="h-full">
-            <CardContent className="flex flex-col gap-4 p-6">
-              <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-md">
+          <Card
+            key={index}
+            className="relative h-full overflow-hidden text-center shadow-xl"
+          >
+            <CardContent className="flex flex-col gap-6 p-6">
+              <div className="absolute top-0 right-0 flex rotate-12 items-center justify-center rounded-bl-md p-4 opacity-20">
                 {item.icon}
               </div>
-              <h3 className="text-base font-semibold">{item.title}</h3>
+              <h3 className="text-xl font-bold">{item.title}</h3>
               <p className="text-muted-foreground text-sm">
                 {item.description}
               </p>
-              <Button variant="outline" className="mt-auto w-fit text-sm">
+              <Button className="mx-auto w-full text-sm">
                 {item.buttonText}
               </Button>
             </CardContent>

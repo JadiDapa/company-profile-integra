@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface AuthHeaderProps {
   title: string;
   subtitle: string;
@@ -8,17 +6,12 @@ interface AuthHeaderProps {
 export default function AuthHeader({ title, subtitle }: AuthHeaderProps) {
   return (
     <div className="">
-      <div className="relative mx-auto h-14 w-40">
-        <Image
-          src="/images/logo.png"
-          alt="Logo"
-          fill
-          className="object-contain object-center"
-        />
+      <div className="">
+        <div className="text-primary flex items-center justify-center gap-4 text-center text-4xl font-semibold tracking-wide">
+          <p>{title}</p>
+        </div>
       </div>
-      <h1 className="text-primary mt-6 text-center text-3xl font-medium lg:text-5xl">
-        {title}
-      </h1>
+
       <p className="mx-auto mt-2 max-w-sm text-center text-sm">{subtitle}</p>
     </div>
   );

@@ -1,25 +1,19 @@
 "use client";
-import { ReactNode } from "react";
-import { SessionProvider } from "next-auth/react";
+
+import { ReactNode, useState } from "react";
+import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 interface Props {
   children: ReactNode;
 }
 
 export default function Providers({ children }: Props) {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider>{children}</SessionProvider>
-      <ProgressBar
-        height="4px"
-        color="#00467f"
-        options={{ showSpinner: false }}
-        shallowRouting
-      />
-    </QueryClientProvider>
+    <ClerkProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </ClerkProvider>
   );
 }

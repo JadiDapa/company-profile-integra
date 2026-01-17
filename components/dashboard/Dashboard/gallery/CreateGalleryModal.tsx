@@ -1,3 +1,5 @@
+"use client";
+
 import { DialogClose, DialogHeader } from "@/components/ui/dialog";
 import {
   Dialog,
@@ -19,14 +21,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Upload, XCircle } from "lucide-react";
-import { useState } from "react";
-import slugify from "slugify";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createGallery } from "@/lib/networks/gallery";
-import { CreateGalleryType } from "@/lib/types/gallery";
+import { createGallery } from "@/app/actions/gallery.action";
+import slugify from "slugify";
 
 const gallerySchema = z.object({
   title: z.string().min(1, "Gallery Name is required"),
@@ -35,18 +34,7 @@ const gallerySchema = z.object({
 export default function CreateGalleryModal() {
   const [picture, setPicture] = useState<File>();
   const [pictureUrl, setPictureUrl] = useState<string>();
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
-  const { mutate: onCreateGallery, isPending } = useMutation({
-    mutationFn: (values: CreateGalleryType) => createGallery(values),
-    onSuccess: () => {
-      toast.success("Data Created Successfully!");
-      queryClient.invalidateQueries({ queryKey: ["galleries"] });
-      router.refresh();
-    },
-    onError: () => toast.error("Something Went Wrong!"),
-  });
+  const [isPending, startTransition] = useTransition();
 
   function handlePicture(e: React.ChangeEvent<HTMLInputElement>) {
     const picture = e.target.files?.[0];
@@ -72,10 +60,30 @@ export default function CreateGalleryModal() {
       return;
     }
 
-    onCreateGallery({
-      image: picture,
-      slug: slugify(values.title, { lower: true }),
-      ...values,
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("image", picture);
+
+    startTransition(async () => {
+      try {
+        const title = formData.get("title") as string;
+        const image = formData.get("image") as File;
+
+        if (!image) {
+          throw new Error("Image is required");
+        }
+
+        await createGallery({
+          gallery: {
+            title: title,
+            slug: slugify(title, { lower: true }),
+          },
+          file: image,
+        });
+        toast.success("Gallery created!");
+      } catch (err) {
+        toast.error("Something went wrong");
+      }
     });
   }
 

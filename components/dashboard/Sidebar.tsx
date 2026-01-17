@@ -1,130 +1,206 @@
 "use client";
 
-import { Accordion } from "@/components/ui/accordion";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import useSidebarStore from "@/stores/SidebarStore";
-import { House, Images, LogOut, NotebookPen, X } from "lucide-react";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { User, UserRole } from "@/generated/prisma";
+import { adminItems, settingsItems, technicianItems } from "@/lib/sidebar-menu";
+import { PanelRightOpen, LogOut } from "lucide-react";
 
-const userLink = [
-  {
-    name: "Dashboard",
-    url: "/dashboard",
-    Icon: House,
-    public: true,
-  },
-  {
-    name: "Activities",
-    url: "/dashboard/activities",
-    Icon: NotebookPen,
-    public: true,
-  },
-  {
-    name: "Gallery",
-    url: "/dashboard/galleries",
-    Icon: Images,
-    public: false,
-  },
-];
+// Menu items.
 
-export default function Sidebar() {
-  const { isSidebarOpen, closeSidebar } = useSidebarStore();
-
+export default function DashboardSidebar({ user }: { user: User }) {
   const pathname = usePathname();
-
+  const { toggleSidebar } = useSidebar();
+  const { signOut } = useClerk();
   const router = useRouter();
 
-  async function handleLogout() {
+  const role = user.role as UserRole;
+
+  const handleSignOut = async () => {
     await signOut();
-    router.push("/");
-    toast.success("Behasil Log Out!");
-  }
+    router.replace("/sign-in");
+  };
 
   return (
-    <>
-      <aside
-        className={cn(
-          "box-shadow bg-primary fixed z-50 min-h-screen w-[280px] space-y-3 overflow-hidden px-4 py-7 shadow-sm transition-all duration-500",
-          isSidebarOpen ? "translate-x-0" : "max-lg:-translate-x-full",
-        )}
-      >
-        <div className="flex w-full items-center">
-          <Link
-            href={"/"}
-            className="bg-background relative flex h-12 w-16 items-center justify-center rounded-lg"
-          >
-            <div className="relative h-12 w-12">
+    <Sidebar className="bg-background border-none p-2">
+      <SidebarContent className="bg-background">
+        <ScrollArea className="bg-primary border-border h-screen overflow-hidden rounded-2xl border px-5">
+          <div className="mb-4 flex items-center justify-between gap-3 py-4 pt-4">
+            <figure className="relative h-16 w-48">
               <Image
                 src="/images/logo.png"
                 alt="Logo"
                 className="object-contain object-center"
                 fill
               />
-            </div>
-          </Link>
-          <Link href={"/"} className="flex-1">
-            <p className="text-background text-center font-medium">
-              Taruna Augerah Mandiri
-            </p>
-          </Link>
+            </figure>
+            <PanelRightOpen
+              onClick={toggleSidebar}
+              className="text-white"
+              strokeWidth={1.4}
+            />
+          </div>
+          {/* Overview */}
 
-          <X
-            onClick={closeSidebar}
-            className="text-background lg:hidden"
-            size={32}
-            strokeWidth={1.8}
-          />
-        </div>
+          {role === "TECHNICIAN" && (
+            <SidebarGroup className="p-0 pt-1">
+              <SidebarGroupLabel className="text-sm font-semibold text-white">
+                TECHNICIAN MENU
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {technicianItems.map((item) => {
+                    const active = pathname === item.url;
 
-        <Separator />
+                    return (
+                      <SidebarMenuItem
+                        key={item.title}
+                        className="relative rounded-none p-0"
+                      >
+                        <SidebarMenuButton asChild>
+                          <Link
+                            href={item.url || "#"}
+                            className={`${
+                              active
+                                ? "text-primary bg-white font-medium hover:bg-white"
+                                : "text-white"
+                            } flex h-10 items-center gap-x-4`}
+                          >
+                            <item.icon
+                              className={`${
+                                active
+                                  ? "text-primary font-medium"
+                                  : "text-white"
+                              } size-5 text-base`}
+                            />
+                            <span
+                              className={`${
+                                active
+                                  ? "text-primary font-medium"
+                                  : "text-white"
+                              } text-base`}
+                            >
+                              {item.title}
+                            </span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )}
 
-        <ScrollArea className="h-[85vh] text-slate-100">
-          <Accordion type="single" className="flex flex-col gap-2" collapsible>
-            {userLink.map((item) => {
-              return (
-                <div key={item.url}>
-                  <Link
-                    onClick={closeSidebar}
-                    key={item.url}
-                    href={item.url}
-                    className={cn(
-                      "text-background mt-1 flex w-full items-center justify-between rounded-lg px-5 py-2.5 duration-300",
-                      pathname === item.url
-                        ? "bg-background text-primary shadow-sm"
-                        : "hover:bg-background hover:text-primary",
-                    )}
-                  >
-                    <div className="flex items-center justify-center gap-5">
-                      <item.Icon strokeWidth={1.8} size={24} />
-                      <div className="text-xl">{item.name}</div>
+          {role === "ADMIN" && (
+            <SidebarGroup className="p-0 pt-1">
+              <SidebarGroupLabel className="text-sm font-semibold text-white">
+                ADMIN MENU
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {adminItems.map((item) => {
+                    const active = pathname === item.url;
+
+                    return (
+                      <SidebarMenuItem
+                        key={item.title}
+                        className="relative rounded-none p-0"
+                      >
+                        <SidebarMenuButton asChild>
+                          <Link
+                            href={item.url || "#"}
+                            className={`${
+                              active
+                                ? "text-primary bg-white font-medium hover:bg-white"
+                                : "text-white"
+                            } flex h-10 items-center gap-x-4`}
+                          >
+                            <item.icon
+                              className={`${
+                                active
+                                  ? "text-primary font-medium"
+                                  : "text-white"
+                              } size-5 text-base`}
+                            />
+                            <span
+                              className={`${
+                                active
+                                  ? "text-primary font-medium"
+                                  : "text-white"
+                              } text-base`}
+                            >
+                              {item.title}
+                            </span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )}
+
+          {/* SETTINGS pinned to bottom */}
+          <SidebarGroup className="mt-auto p-0 pt-6 pb-6">
+            <SidebarGroupLabel className="text-sm font-semibold text-white">
+              GENERAL
+            </SidebarGroupLabel>
+
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {settingsItems.map((item) => {
+                  return (
+                    <SidebarMenuItem
+                      key={item.title}
+                      className="relative rounded-none p-0"
+                    >
+                      <SidebarMenuButton asChild>
+                        <Link
+                          href={item.url}
+                          className="flex h-10 items-center gap-x-4"
+                        >
+                          <item.icon className="size-5 text-white" />
+                          <span className="text-base text-white">
+                            {item.title}
+                          </span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+                <SidebarMenuItem className="relative rounded-none p-0">
+                  <SidebarMenuButton asChild>
+                    <div
+                      onClick={handleSignOut}
+                      className="flex h-10 cursor-pointer items-center gap-x-4"
+                    >
+                      <LogOut className="size-5 text-white" />
+                      <span className="text-base text-white">Log Out</span>
                     </div>
-                  </Link>
-                </div>
-              );
-            })}
-            <Separator />
-            <div
-              className={cn(
-                "text-background mt-1 flex h-full w-full cursor-pointer items-center px-5 py-2.5 duration-300",
-              )}
-            >
-              <div
-                onClick={handleLogout}
-                className={`"justify-center flex cursor-pointer items-center gap-5`}
-              >
-                <LogOut strokeWidth={1.8} size={24} />
-                <div className="text-xl">Log Out</div>
-              </div>
-            </div>
-          </Accordion>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
         </ScrollArea>
-      </aside>
-    </>
+      </SidebarContent>
+    </Sidebar>
   );
 }

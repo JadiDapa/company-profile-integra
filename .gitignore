@@ -42,3 +42,9 @@ next-env.d.ts
 .qodo
 
 /dev.db
+/generated/prisma
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+/media

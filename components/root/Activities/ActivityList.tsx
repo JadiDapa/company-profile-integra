@@ -1,33 +1,21 @@
-"use client";
-
-import { getAllActivities } from "@/lib/networks/activity";
-import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import Image from "next/image";
-import SearchActivityBar from "./SearchActivityBar";
-import { useState } from "react";
+import { ActivityType } from "@/lib/validators/activity.validator";
 
-export default function ActivityList() {
-  const [query, setQuery] = useState<string>("");
-
-  const { data: activities } = useQuery({
-    queryFn: getAllActivities,
-    queryKey: ["activities"],
-  });
-
-  const filteredActivities = activities?.filter((activity) =>
-    activity.title.toLowerCase().includes(query.toLowerCase()),
-  );
-
+export default function ActivityList({
+  activities,
+}: {
+  activities: ActivityType[];
+}) {
   return (
     <section id="activity-list" className="bg-primary/5 px-28 py-12 pb-24">
-      <SearchActivityBar setQuery={setQuery} />
+      {/* <SearchActivityBar setQuery={setQuery} /> */}
       <div className="grid grid-cols-1 gap-12 pt-6 lg:grid-cols-3">
-        {filteredActivities?.map((activity) => (
+        {activities?.map((activity) => (
           <div key={activity.id}>
             <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md">
               <Image
-                src={activity.image as string}
+                src={activity.image?.url as string}
                 alt={activity.title}
                 fill
                 className="object-cover object-center"

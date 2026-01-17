@@ -1,8 +1,11 @@
+import { getAllActivities } from "@/app/actions/activity.action";
 import ActivityList from "@/components/root/Activities/ActivityList";
 import LatestActivity from "@/components/root/Activities/LatestActivity";
 import PageHeader from "@/components/root/PageHeader";
 
-export default function ActivitiesPage() {
+export default async function ActivitiesPage() {
+  const activities = await getAllActivities();
+
   return (
     <section id="activities">
       <PageHeader
@@ -11,8 +14,12 @@ export default function ActivitiesPage() {
         accent="All Of Them"
         subtitle="From community initiatives to innovative projects, we actively engage in activities that create impact, foster growth, and drive meaningful connections."
       />
-      <LatestActivity title="" content="" image="" date="" category="" />
-      <ActivityList />
+      {activities.length > 0 && (
+        <>
+          <LatestActivity activity={activities[0]} />
+          <ActivityList activities={activities.slice(1)} />
+        </>
+      )}
     </section>
   );
 }

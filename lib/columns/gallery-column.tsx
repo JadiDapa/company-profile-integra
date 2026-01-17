@@ -2,8 +2,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import TableSorter from "@/components/dashboard/TableSorter";
 import Image from "next/image";
-import { GalleryType } from "../types/gallery";
 import { Eye, Pencil, Trash } from "lucide-react";
+import { GalleryType } from "../validators/gallery.validator";
+import { getMediaUrl } from "../getMediaUrl";
 
 export const galleryColumn: ColumnDef<GalleryType>[] = [
   {
@@ -18,12 +19,13 @@ export const galleryColumn: ColumnDef<GalleryType>[] = [
     accessorKey: "image",
     accessorFn: (row) => row.image,
     header: ({ column }) => <TableSorter column={column} header="IMAGE" />,
-    cell: ({ getValue }) => (
+    cell: ({ row }) => (
       <div className="relative aspect-square h-32 w-40 overflow-hidden rounded-sm">
         <Image
-          src={getValue() as string}
+          unoptimized
+          src={getMediaUrl(row.original.image?.url as string)}
           className="object-cover object-center"
-          alt={(getValue() as string) + " Image"}
+          alt={row.original.image?.filename as string}
           fill
         />
       </div>

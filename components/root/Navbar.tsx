@@ -10,10 +10,6 @@ import { Search } from "lucide-react";
 
 const links = [
   {
-    name: "HOME",
-    route: "/",
-  },
-  {
     name: "ABOUT",
     route: "/about",
   },
@@ -28,6 +24,10 @@ const links = [
   {
     name: "CONTACT",
     route: "/contact",
+  },
+  {
+    name: "TICKETS",
+    route: "/my-tickets",
   },
 ];
 
@@ -58,14 +58,14 @@ const Navbar = () => {
       )}
     >
       <figure className="flex items-center gap-3">
-        <div className="relative h-6 w-12 lg:h-20 lg:w-40">
+        <Link href="/" className="relative h-6 w-12 lg:h-20 lg:w-40">
           <Image
             src="/images/logo.png"
             alt="Integra Logo"
             fill
             className={`object-contain object-center transition ${!isScrolled && "brightness-0 invert"}`}
           />
-        </div>
+        </Link>
       </figure>
       <div className="block lg:hidden">
         <MobileNav links={links} />

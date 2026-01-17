@@ -58,7 +58,7 @@ const DataTable: React.FC<DataTableProps<any, any>> = ({
   });
 
   return (
-    <div className="box-shadow w-full rounded-md bg-white shadow-md">
+    <div className="box-shadow w-full rounded-md border">
       {filters && (
         <div className="w-full">
           <div className="p-4 text-xl">{title}</div>

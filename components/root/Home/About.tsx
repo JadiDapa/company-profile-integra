@@ -37,8 +37,9 @@ export default function About() {
         </div>
       </div>
       <div className="relative order-1 flex h-[520px] w-full flex-2 items-center justify-center px-12 lg:order-2 lg:w-auto">
+        {/* <div className="absolute inset-0 z-10 bg-red-500/20" /> */}
         <Image
-          src={"/images/illust-5.jpg"}
+          src={"/images/about-1.jpg"}
           alt="Illustration"
           fill
           className="object-cover object-center"
