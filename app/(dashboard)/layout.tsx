@@ -1,3 +1,6 @@
+export const revalidate = 0;
+
+
 import React, { ReactNode } from "react";
 import { getUser } from "../actions/user.actions";
 import { redirect } from "next/navigation";
