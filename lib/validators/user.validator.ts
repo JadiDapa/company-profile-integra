@@ -37,6 +37,11 @@ export const AdminCreateUserSchema = z.object({
   role: UserRoleEnum,
 });
 
+export const UpdateUserRoleSchema = z.object({
+  role: UserRoleEnum,
+});
+
 export type CreateUserDTO = z.infer<typeof CreateUserSchema>;
 export type UpdateUserDTO = z.infer<typeof UpdateUserSchema>;
 export type AdminCreateUserDTO = z.infer<typeof AdminCreateUserSchema>;
+export type UpdateUserRoleDTO = z.infer<typeof UpdateUserRoleSchema>;

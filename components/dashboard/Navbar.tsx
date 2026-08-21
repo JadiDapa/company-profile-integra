@@ -1,8 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Bell, Search } from "lucide-react";
+import { Mail, Search } from "lucide-react";
 import Image from "next/image";
 import { User } from "@/generated/prisma";
+import Notifications from "@/components/dashboard/Notifications";
 
 export default async function Navbar({ user }: { user: User }) {
   return (
@@ -27,8 +28,8 @@ export default async function Navbar({ user }: { user: User }) {
         <div className="bg-card rounded-full border p-2">
           <Mail className="size-5 text-gray-600" />
         </div>
-        <div className="bg-card rounded-full border p-2">
-          <Bell className="size-5 text-gray-600" />
+        <div className="bg-card rounded-full border p-2 text-gray-600">
+          <Notifications />
         </div>
 
         {/* Profile */}

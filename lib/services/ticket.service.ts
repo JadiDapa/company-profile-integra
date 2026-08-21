@@ -228,4 +228,49 @@ export const TicketService = {
   async delete(id: number) {
     return prisma.ticket.delete({ where: { id } });
   },
+
+  async getStats() {
+    const [statusCounts, priorityCounts, completedTickets, deviceCount] =
+      await Promise.all([
+        prisma.ticket.groupBy({ by: ["status"], _count: { _all: true } }),
+        prisma.ticket.groupBy({ by: ["priority"], _count: { _all: true } }),
+        prisma.ticket.findMany({
+          where: { status: "COMPLETED" },
+          select: { createdAt: true, updatedAt: true },
+        }),
+        prisma.device.count(),
+      ]);
+
+    const byStatus = Object.fromEntries(
+      statusCounts.map((s) => [s.status, s._count._all]),
+    ) as Record<TicketStatus, number>;
+
+    const byPriority = Object.fromEntries(
+      priorityCounts.map((p) => [p.priority, p._count._all]),
+    );
+
+    const totalTickets = statusCounts.reduce(
+      (sum, s) => sum + s._count._all,
+      0,
+    );
+
+    const avgResolutionHours =
+      completedTickets.length === 0
+        ? null
+        : completedTickets.reduce(
+            (sum, t) =>
+              sum + (t.updatedAt.getTime() - t.createdAt.getTime()),
+            0,
+          ) /
+          completedTickets.length /
+          (1000 * 60 * 60);
+
+    return {
+      totalTickets,
+      deviceCount,
+      byStatus,
+      byPriority,
+      avgResolutionHours,
+    };
+  },
 };

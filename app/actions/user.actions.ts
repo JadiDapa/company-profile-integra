@@ -4,6 +4,7 @@ import { UserService } from "@/lib/services/user.service";
 import {
   AdminCreateUserSchema,
   CreateUserSchema,
+  UpdateUserRoleSchema,
   UpdateUserSchema,
 } from "@/lib/validators/user.validator";
 import { revalidatePath } from "next/cache";
@@ -13,6 +14,7 @@ import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/generated/prisma";
 import bcrypt from "bcryptjs";
 import { getUser as getCurrentUser, requireRole } from "@/lib/auth";
+import { assertNotRateLimited, clearRateLimit } from "@/lib/rate-limit";
 
 export async function getUser() {
   return await getCurrentUser();
@@ -36,6 +38,8 @@ export async function signInUser(input: unknown) {
   }
 
   // 1) User NOT exist -> must validate device credentials
+  assertNotRateLimited(`signin:${username}`);
+
   const device = await prisma.device.findUnique({
     where: { ssid: username as string },
   });
@@ -44,6 +48,8 @@ export async function signInUser(input: unknown) {
 
   const passwordMatches = await bcrypt.compare(password, device.password);
   if (!passwordMatches) throw new Error("Password salah");
+
+  clearRateLimit(`signin:${username}`);
 
   // 2) Ensure Clerk user exists (create if missing)
   const clerk = await clerkClient();
@@ -110,6 +116,23 @@ export async function updateUser(
   await UserService.update(userId, {
     ...data,
   });
+
+  revalidatePath("/dashboard/users");
+}
+
+export async function updateUserRole(
+  userId: number,
+  input: z.input<typeof UpdateUserRoleSchema>,
+) {
+  const admin = await requireRole("ADMIN");
+
+  if (admin.id === userId) {
+    throw new Error("You cannot change your own role");
+  }
+
+  const { role } = UpdateUserRoleSchema.parse(input);
+
+  await UserService.updateRole(userId, role);
 
   revalidatePath("/dashboard/users");
 }

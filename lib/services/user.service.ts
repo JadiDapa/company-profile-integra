@@ -94,6 +94,13 @@ export const UserService = {
     });
   },
 
+  async updateRole(id: number, role: UserRole) {
+    return await prisma.user.update({
+      where: { id },
+      data: { role },
+    });
+  },
+
   async delete(id: number) {
     return await prisma.user.delete({ where: { id } });
   },

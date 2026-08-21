@@ -6,6 +6,7 @@ import {
   Ticket,
   Image,
   FileText,
+  Users,
 } from "lucide-react";
 
 type SubmenuItem = {
@@ -65,6 +66,11 @@ export const adminItems = [
     title: "Aktivitas",
     url: "/dashboard/activities",
     icon: FileText,
+  },
+  {
+    title: "Pengguna",
+    url: "/dashboard/users",
+    icon: Users,
   },
 ];
 

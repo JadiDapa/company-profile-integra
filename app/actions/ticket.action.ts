@@ -8,6 +8,8 @@ import { createManyMedia } from "./media.action";
 import { MediaTable, MediaType, TicketStatus } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
+import { NotificationService } from "@/lib/services/notification.service";
+import { statusLabel } from "@/lib/ticket-status";
 
 const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
   SUBMITTED: ["CONFIRMED", "CANCELED"],
@@ -19,6 +21,11 @@ const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
 
 export async function getAllTickets() {
   return await TicketService.getAll();
+}
+
+export async function getTicketStats() {
+  await requireRole("ADMIN", "TECHNICIAN");
+  return await TicketService.getStats();
 }
 
 export async function getAssignedTickets(technicianId: number) {
@@ -59,6 +66,16 @@ export async function createTicket({
     description: "Evidence Submission",
   });
 
+  const admins = await prisma.user.findMany({ where: { role: "ADMIN" } });
+  await NotificationService.createMany(
+    admins.map((admin) => ({
+      userId: admin.id,
+      ticketId: created!.id,
+      title: "New ticket submitted",
+      message: `Ticket ${created!.code} was submitted and needs review.`,
+    })),
+  );
+
   revalidatePath("/my-tickets");
   revalidatePath("/dashboard/tickets");
 }
@@ -81,6 +98,7 @@ export async function updateTicket({
   await prisma.$transaction(async (tx) => {
     const ticket = await tx.ticket.findUnique({
       where: { id: ticketId },
+      include: { device: true },
     });
     if (!ticket) throw new Error("Ticket not found");
 
@@ -119,6 +137,35 @@ export async function updateTicket({
         authorId: user.id,
       },
     });
+
+    const notifications: Parameters<
+      typeof NotificationService.createMany
+    >[0] = [];
+
+    // Notify the customer that owns the device this ticket was raised on.
+    const customer = await tx.user.findUnique({
+      where: { username: ticket.device.ssid },
+    });
+    if (customer) {
+      notifications.push({
+        userId: customer.id,
+        ticketId,
+        title: `Ticket ${ticket.code} ${statusLabel(nextStatus).toLowerCase()}`,
+        message,
+      });
+    }
+
+    // Also notify the technician when they're assigned work.
+    if (nextStatus === "IN_PROGRESS" && technicianId) {
+      notifications.push({
+        userId: technicianId,
+        ticketId,
+        title: `You were assigned ticket ${ticket.code}`,
+        message,
+      });
+    }
+
+    await NotificationService.createMany(notifications, tx);
   });
 
   revalidatePath(`/my-tickets`);
