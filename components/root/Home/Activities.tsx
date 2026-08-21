@@ -1,5 +1,6 @@
 import { getAllActivities } from "@/app/actions/activity.action";
 import { formatDate } from "@/lib/utils/format-date";
+import { getMediaUrl } from "@/lib/getMediaUrl";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,7 +37,8 @@ export default async function Activities() {
           <div className="relative hidden w-full gap-9 overflow-hidden max-lg:hover:cursor-pointer lg:col-span-2 lg:flex lg:flex-row">
             <div className="relative h-96 flex-1 cursor-pointer overflow-hidden md:h-80">
               <Image
-                src={activities[0].image?.url as string}
+                unoptimized
+                src={getMediaUrl(activities[0].image?.url as string)}
                 alt={activities[0].title}
                 fill
                 className="object-cover object-center"
@@ -74,7 +76,8 @@ export default async function Activities() {
               >
                 <div className="relative z-0 h-44 w-full shrink-0 overflow-hidden lg:h-52">
                   <Image
-                    src={activity.image?.url as string}
+                    unoptimized
+                    src={getMediaUrl(activity.image?.url as string)}
                     alt={activity.title}
                     fill
                     className="object-cover object-center"

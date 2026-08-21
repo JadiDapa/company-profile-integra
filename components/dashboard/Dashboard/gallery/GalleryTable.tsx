@@ -18,7 +18,7 @@ export default function GalleryTable({ galleries }: GalleryTableProps) {
         <div className="grid gap-4 p-4 lg:grid-cols-4 lg:gap-6">
           <SearchDataTable
             table={table}
-            column="overtimeNumber"
+            column="title"
             placeholder="Search Document Name..."
           />
         </div>

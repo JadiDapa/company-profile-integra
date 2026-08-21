@@ -3,6 +3,7 @@ import { Clock, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { ActivityType } from "@/lib/validators/activity.validator";
+import { getMediaUrl } from "@/lib/getMediaUrl";
 
 export default async function LatestActivity({
   activity,
@@ -24,8 +25,9 @@ export default async function LatestActivity({
       <div className="mt-4">
         <div className="relative h-[500px] w-full overflow-hidden rounded-lg shadow-xl">
           <Image
+            unoptimized
             fill
-            src={activity.image?.url as string}
+            src={getMediaUrl(activity.image?.url as string)}
             alt={activity.title}
             className="object-cover object-center"
           />

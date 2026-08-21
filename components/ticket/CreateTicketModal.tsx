@@ -35,9 +35,8 @@ type TicketFormType = z.infer<typeof CreateTicketSchema>;
 
 export default function CreateTicketModal({ deviceId }: { deviceId: number }) {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-
   const [pictures, setPictures] = useState<File[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<TicketFormType>({
     resolver: zodResolver(CreateTicketSchema),

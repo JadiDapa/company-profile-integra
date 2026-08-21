@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import Image from "next/image";
 import { ActivityType } from "@/lib/validators/activity.validator";
+import { getMediaUrl } from "@/lib/getMediaUrl";
 
 export default function ActivityList({
   activities,
@@ -15,7 +16,8 @@ export default function ActivityList({
           <div key={activity.id}>
             <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md">
               <Image
-                src={activity.image?.url as string}
+                unoptimized
+                src={getMediaUrl(activity.image?.url as string)}
                 alt={activity.title}
                 fill
                 className="object-cover object-center"

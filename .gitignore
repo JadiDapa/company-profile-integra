@@ -50,3 +50,5 @@ next-env.d.ts
 /media
 
 /package-lock.json
+
+CLAUDE.md
