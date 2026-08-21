@@ -7,6 +7,7 @@ import {
   type DeviceAuthDTO,
   type UpdateDeviceDTO,
 } from "../validators/device.validator";
+import bcrypt from "bcryptjs";
 
 export type DeviceListOptions = {
   page?: number;
@@ -76,7 +77,7 @@ export const DeviceService = {
     return prisma.device.create({
       data: {
         ssid: data.ssid,
-        password: data.password,
+        password: await bcrypt.hash(data.password, 10),
       },
     });
   },
@@ -84,7 +85,12 @@ export const DeviceService = {
   async update(id: number, data: UpdateDeviceDTO) {
     return prisma.device.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        password: data.password
+          ? await bcrypt.hash(data.password, 10)
+          : undefined,
+      },
     });
   },
 
@@ -102,8 +108,10 @@ export const DeviceService = {
     });
 
     if (!device) throw new Error("SSID tidak ditemukan");
-    if (!device.password || device.password !== password)
-      throw new Error("Password salah");
+
+    const matches =
+      device.password && (await bcrypt.compare(password, device.password));
+    if (!matches) throw new Error("Password salah");
 
     return { id: device.id, ssid: device.ssid };
   },

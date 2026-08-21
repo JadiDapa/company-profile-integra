@@ -7,6 +7,7 @@ import {
 } from "@/lib/validators/device.validator";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+import { requireRole } from "@/lib/auth";
 
 export async function getAllDevices() {
   return await DeviceService.getAll();
@@ -21,23 +22,34 @@ export async function getDeviceBySSID(ssid: string) {
 }
 
 export async function createDevice(input: z.input<typeof CreateDeviceSchema>) {
+  await requireRole("ADMIN");
+
   const data = CreateDeviceSchema.parse({ ...input });
 
   await DeviceService.create(data);
 
-  revalidatePath("/devices");
+  revalidatePath("/dashboard/devices");
 }
 
 export async function updateDevice(
   deviceId: number,
   input: z.input<typeof UpdateDeviceSchema>,
 ) {
+  await requireRole("ADMIN");
+
   const data = UpdateDeviceSchema.parse(input);
 
   await DeviceService.update(deviceId, {
     ...data,
   });
 
-  revalidatePath("/devices/" + input.ssid);
-  revalidatePath("/devices");
+  revalidatePath("/dashboard/devices");
+}
+
+export async function deleteDevice(deviceId: number) {
+  await requireRole("ADMIN");
+
+  await DeviceService.delete(deviceId);
+
+  revalidatePath("/dashboard/devices");
 }

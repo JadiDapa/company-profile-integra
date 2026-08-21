@@ -5,19 +5,7 @@ import { TicketType } from "../validators/ticket.validator";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Eye } from "lucide-react";
-
-function statusVariant(status: string) {
-  switch (status) {
-    case "COMPLETED":
-      return "default";
-    case "IN_PROGRESS":
-      return "secondary";
-    case "CANCELED":
-      return "destructive";
-    default:
-      return "outline";
-  }
-}
+import { statusBadgeVariant } from "@/lib/ticket-status";
 
 export const ticketColumn: ColumnDef<TicketType>[] = [
   {
@@ -71,7 +59,7 @@ export const ticketColumn: ColumnDef<TicketType>[] = [
     header: ({ column }) => <TableSorter column={column} header="STATUS" />,
     cell: ({ row }) => (
       <Badge
-        variant={statusVariant(row.original.status)}
+        variant={statusBadgeVariant(row.original.status)}
         className="capitalize"
       >
         {row.original.status.replace("_", " ").toLowerCase()}

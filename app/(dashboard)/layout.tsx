@@ -18,6 +18,10 @@ export default async function RootLayout({ children }: Props) {
     redirect("/sign-in");
   }
 
+  if (user.role !== "ADMIN" && user.role !== "TECHNICIAN") {
+    redirect("/my-tickets");
+  }
+
   return (
     <SidebarProvider>
       <Sidebar user={user} />

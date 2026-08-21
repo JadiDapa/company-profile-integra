@@ -5,11 +5,12 @@ import Image from "next/image";
 import SearchGalleryBar from "./SearchGalleryBar";
 import { useEffect, useState } from "react";
 import { getAllGalleries } from "@/app/actions/gallery.action";
-import { GalleryWithImage } from "@/lib/validators/gallery.validator";
+import { GalleryType } from "@/lib/validators/gallery.validator";
+import { getMediaUrl } from "@/lib/getMediaUrl";
 
 export default function Pictures() {
   const [query, setQuery] = useState("");
-  const [galleries, setGalleries] = useState<GalleryWithImage[]>([]);
+  const [galleries, setGalleries] = useState<GalleryType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,7 +43,8 @@ export default function Pictures() {
           >
             <div className="relative h-56 w-full overflow-hidden shadow-md">
               <Image
-                src={gallery.image?.url as string}
+                unoptimized
+                src={getMediaUrl(gallery.image?.url as string)}
                 alt={gallery.title}
                 fill
                 className="object-cover object-center"

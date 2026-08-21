@@ -43,7 +43,7 @@ export default function AdminTicketActions({
       <h3 className="text-lg font-semibold">Ticket Handling</h3>
 
       {/* LOG MESSAGE */}
-      {ticket.status !== "COMPLETED" && (
+      {ticket.status !== "COMPLETED" && ticket.status !== "CANCELED" && (
         <div className="space-y-1">
           <label className="text-sm font-medium">Log message</label>
           <Input
@@ -108,6 +108,20 @@ export default function AdminTicketActions({
           disabled={!canSubmit || isPending}
         />
       )}
+
+      {/* Any non-terminal status → CANCELED */}
+      {(ticket.status === "SUBMITTED" ||
+        ticket.status === "CONFIRMED" ||
+        ticket.status === "IN_PROGRESS") && (
+        <ActionBlock
+          title="🔴 Cancel ticket"
+          description="Cancel this ticket. This cannot be undone."
+          button="Cancel Ticket"
+          variant="destructive"
+          onClick={() => handle("CANCELED")}
+          disabled={!canSubmit || isPending}
+        />
+      )}
     </div>
   );
 }
@@ -118,18 +132,25 @@ function ActionBlock({
   button,
   onClick,
   disabled,
+  variant,
 }: {
   title: string;
   description: string;
   button: string;
   onClick: () => void;
   disabled: boolean;
+  variant?: "default" | "destructive";
 }) {
   return (
     <div className="bg-muted/40 space-y-2 rounded-md p-4">
       <p className="font-medium">{title}</p>
       <p className="text-muted-foreground text-sm">{description}</p>
-      <Button className="w-full" onClick={onClick} disabled={disabled}>
+      <Button
+        variant={variant}
+        className="w-full"
+        onClick={onClick}
+        disabled={disabled}
+      >
         {button}
       </Button>
     </div>

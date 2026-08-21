@@ -11,38 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import EvidenceUploader from "@/components/dashboard/tickets/detail/EvidenceUploader";
-
-function statusBadgeVariant(status?: string) {
-  // adjust to your enum values if needed
-  switch (status) {
-    case "SUBMITTED":
-    case "OPEN":
-      return "secondary";
-    case "IN_PROGRESS":
-      return "default";
-    case "DONE":
-    case "RESOLVED":
-      return "outline";
-    case "CANCELLED":
-      return "destructive";
-    default:
-      return "secondary";
-  }
-}
-
-function priorityBadgeVariant(priority?: string) {
-  switch (priority) {
-    case "HIGH":
-    case "URGENT":
-      return "destructive";
-    case "NORMAL":
-      return "secondary";
-    case "LOW":
-      return "outline";
-    default:
-      return "secondary";
-  }
-}
+import { statusBadgeVariant, priorityBadgeVariant } from "@/lib/ticket-status";
 
 export default async function AdminTicketDetailPage({
   params,

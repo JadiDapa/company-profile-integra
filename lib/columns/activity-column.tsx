@@ -1,9 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import TableSorter from "@/components/dashboard/TableSorter";
-import { ActivityType } from "../types/activity";
+import { ActivityType } from "../validators/activity.validator";
 import Image from "next/image";
-import { Eye, Pencil, Trash } from "lucide-react";
+import { Pencil } from "lucide-react";
+import { getMediaUrl } from "../getMediaUrl";
+import { deleteActivity } from "@/app/actions/activity.action";
+import ConfirmDeleteButton from "@/components/dashboard/ConfirmDeleteButton";
 
 export const activityColumn: ColumnDef<ActivityType>[] = [
   {
@@ -18,12 +21,13 @@ export const activityColumn: ColumnDef<ActivityType>[] = [
     accessorKey: "image",
     accessorFn: (row) => row.image,
     header: ({ column }) => <TableSorter column={column} header="IMAGE" />,
-    cell: ({ getValue }) => (
+    cell: ({ row }) => (
       <div className="relative aspect-square h-24 w-32 overflow-hidden rounded-md">
         <Image
-          src={getValue() as string}
+          unoptimized
+          src={getMediaUrl(row.original.image?.url as string)}
           className="object-cover object-center"
-          alt={(getValue() as string) + " Image"}
+          alt={row.original.image?.filename as string}
           fill
         />
       </div>
@@ -48,20 +52,15 @@ export const activityColumn: ColumnDef<ActivityType>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
         <Link
-          href={`/activities/${row.original.slug}`}
-          className="text-primary size-5"
-        >
-          <Eye />
-        </Link>
-        <Link
           href={`/dashboard/activities/update/${row.original.slug}`}
           className="text-primary size-5"
         >
-          <Pencil />
+          <Pencil className="size-full" />
         </Link>
-        <Link href={`${row.original.slug}`} className="text-primary size-5">
-          <Trash />
-        </Link>
+        <ConfirmDeleteButton
+          itemLabel={`Activity "${row.original.title}"`}
+          onDelete={() => deleteActivity(row.original.id)}
+        />
       </div>
     ),
   },

@@ -2,15 +2,21 @@
 
 import { UserService } from "@/lib/services/user.service";
 import {
+  AdminCreateUserSchema,
   CreateUserSchema,
   UpdateUserSchema,
 } from "@/lib/validators/user.validator";
 import { revalidatePath } from "next/cache";
 import z from "zod";
-import { clerkClient, currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/generated/prisma";
+import bcrypt from "bcryptjs";
+import { getUser as getCurrentUser, requireRole } from "@/lib/auth";
+
+export async function getUser() {
+  return await getCurrentUser();
+}
 
 export async function signInUser(input: unknown) {
   const { username, password } = CreateUserSchema.parse(input);
@@ -35,7 +41,9 @@ export async function signInUser(input: unknown) {
   });
 
   if (!device) throw new Error("SSID tidak ditemukan");
-  if (device.password !== password) throw new Error("Password salah");
+
+  const passwordMatches = await bcrypt.compare(password, device.password);
+  if (!passwordMatches) throw new Error("Password salah");
 
   // 2) Ensure Clerk user exists (create if missing)
   const clerk = await clerkClient();
@@ -64,44 +72,44 @@ export async function signInUser(input: unknown) {
   return { redirectTo: "/my-tickets" };
 }
 
-export async function getUser() {
-  const clerkUser = await currentUser();
-  if (!clerkUser?.username) return null;
-
-  const user = await UserService.getByUsername(clerkUser.username);
-  return user;
-}
-
 export async function getAllUsers() {
+  await requireRole("ADMIN");
   return await UserService.getAll();
 }
 
 export async function getUsersByRole(role: UserRole) {
+  await requireRole("ADMIN", "TECHNICIAN");
   return await UserService.getManyByRole(role);
 }
 
 export async function getUserByUsername(username: string) {
+  await requireRole("ADMIN");
   return await UserService.getByUsername(username);
 }
 
-export async function createUser(input: z.input<typeof CreateUserSchema>) {
-  const data = CreateUserSchema.parse({ ...input });
+export async function createUser(
+  input: z.input<typeof AdminCreateUserSchema>,
+) {
+  await requireRole("ADMIN");
+
+  const data = AdminCreateUserSchema.parse({ ...input });
 
   await UserService.create(data);
 
-  revalidatePath("/users");
+  revalidatePath("/dashboard/users");
 }
 
 export async function updateUser(
   userId: number,
   input: z.input<typeof UpdateUserSchema>,
 ) {
+  await requireRole("ADMIN");
+
   const data = UpdateUserSchema.parse(input);
 
   await UserService.update(userId, {
     ...data,
   });
 
-  revalidatePath("/users/" + input.username);
-  revalidatePath("/users");
+  revalidatePath("/dashboard/users");
 }

@@ -1,10 +1,8 @@
 import { UserRole } from "@/generated/prisma";
 import {
   Home,
-  Settings,
   LucideIcon,
   Server,
-  UserRoundCogIcon,
   Ticket,
   Image,
   FileText,
@@ -67,19 +65,6 @@ export const adminItems = [
     title: "Aktivitas",
     url: "/dashboard/activities",
     icon: FileText,
-  },
-];
-
-export const settingsItems = [
-  {
-    title: "Profil",
-    url: "/profile",
-    icon: UserRoundCogIcon,
-  },
-  {
-    title: "Pengaturan",
-    url: "/settings",
-    icon: Settings,
   },
 ];
 

@@ -3,63 +3,24 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 import { TicketType } from "@/lib/validators/ticket.validator";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/app/actions/user.actions";
 import { getTicketByDeviceId } from "@/app/actions/ticket.action";
-import { TicketPriority, TicketStatus } from "@/generated/prisma";
 import CreateTicketModal from "@/components/ticket/CreateTicketModal";
+import {
+  statusLabel,
+  statusBadgeVariant,
+  priorityLabel,
+  priorityBadgeVariant,
+  TERMINAL_STATUSES,
+} from "@/lib/ticket-status";
 
 function formatDate(d: Date) {
   return new Intl.DateTimeFormat("id-ID", {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(d);
-}
-
-function statusLabel(s: TicketStatus) {
-  const map: Record<TicketStatus, string> = {
-    SUBMITTED: "Submitted",
-    CONFIRMED: "Confirmed",
-    IN_PROGRESS: "In Progress",
-    COMPLETED: "Completed",
-    CANCELED: "Canceled",
-  };
-  return map[s] ?? s;
-}
-
-function priorityLabel(p: TicketPriority) {
-  const map: Record<TicketPriority, string> = {
-    LOW: "Low",
-    NORMAL: "Normal",
-    HIGH: "High",
-  };
-  return map[p] ?? p;
-}
-
-function statusBadgeVariant(s: TicketStatus) {
-  switch (s) {
-    case "COMPLETED":
-      return "default";
-    case "CANCELED":
-      return "destructive";
-    case "IN_PROGRESS":
-      return "secondary";
-    default:
-      return "secondary";
-  }
-}
-
-function priorityBadgeVariant(p: TicketPriority) {
-  switch (p) {
-    case "HIGH":
-      return "destructive";
-    case "LOW":
-      return "outline";
-    default:
-      return "secondary";
-  }
 }
 
 function clamp(text: string, max = 140) {
@@ -96,7 +57,8 @@ export default async function MyTicketsPage() {
     mediaCounts.map((m) => [m.entityId, m._count._all]),
   );
 
-  const activeTicket = tickets.find((t) => t.status !== "COMPLETED") ?? null;
+  const activeTicket =
+    tickets.find((t) => !TERMINAL_STATUSES.includes(t.status)) ?? null;
 
   return (
     <div className="relative w-full bg-white px-4 py-32 lg:px-24">
@@ -166,7 +128,7 @@ export default async function MyTicketsPage() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {tickets
-              .filter((t) => t.status === "COMPLETED")
+              .filter((t) => TERMINAL_STATUSES.includes(t.status))
               .map((t) => (
                 <TicketCard
                   key={t.id}
@@ -265,16 +227,6 @@ function TicketCard({
             <p className="text-muted-foreground text-xs">Attachments</p>
             <p className="font-medium">{attachments}</p>
           </div>
-        </div>
-
-        {/* Optional: detail link (adjust route) */}
-        <div className="flex justify-end">
-          <Link
-            href={`/my-tickets/${ticket.id}`}
-            className="text-sm underline underline-offset-4"
-          >
-            View details
-          </Link>
         </div>
       </CardContent>
     </Card>

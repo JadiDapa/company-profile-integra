@@ -7,7 +7,15 @@ import z from "zod";
 import { createManyMedia } from "./media.action";
 import { MediaTable, MediaType, TicketStatus } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
-import { getUser } from "./user.actions";
+import { requireRole } from "@/lib/auth";
+
+const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
+  SUBMITTED: ["CONFIRMED", "CANCELED"],
+  CONFIRMED: ["IN_PROGRESS", "CANCELED"],
+  IN_PROGRESS: ["COMPLETED", "CANCELED"],
+  COMPLETED: [],
+  CANCELED: [],
+};
 
 export async function getAllTickets() {
   return await TicketService.getAll();
@@ -51,7 +59,8 @@ export async function createTicket({
     description: "Evidence Submission",
   });
 
-  revalidatePath("/galleries");
+  revalidatePath("/my-tickets");
+  revalidatePath("/dashboard/tickets");
 }
 
 type UpdateTicketProps = {
@@ -67,14 +76,20 @@ export async function updateTicket({
   message,
   technicianId,
 }: UpdateTicketProps) {
-  const user = await getUser();
-  if (!user) throw new Error("Unauthorized");
+  const user = await requireRole("ADMIN", "TECHNICIAN");
 
   await prisma.$transaction(async (tx) => {
     const ticket = await tx.ticket.findUnique({
       where: { id: ticketId },
     });
     if (!ticket) throw new Error("Ticket not found");
+
+    const allowedNext = ALLOWED_TRANSITIONS[ticket.status];
+    if (!allowedNext.includes(nextStatus)) {
+      throw new Error(
+        `Cannot move ticket from ${ticket.status} to ${nextStatus}`,
+      );
+    }
 
     const data: any = {
       status: nextStatus,

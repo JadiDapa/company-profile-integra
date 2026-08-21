@@ -23,12 +23,20 @@ const UserBaseSchema = z.object({
 });
 
 export const CreateUserSchema = UserBaseSchema.extend({
-  password: z.string().min(4, "Password minimal 8 karakter"),
+  password: z.string().min(8, "Password minimal 8 karakter"),
 });
 
 export const UpdateUserSchema = UserBaseSchema.partial().extend({
   fullName: z.string().min(1),
 });
 
+// Used by admins creating internal (Clerk-less) accounts, e.g. technicians.
+export const AdminCreateUserSchema = z.object({
+  username: z.string().min(3).max(30),
+  fullName: z.string().min(1),
+  role: UserRoleEnum,
+});
+
 export type CreateUserDTO = z.infer<typeof CreateUserSchema>;
 export type UpdateUserDTO = z.infer<typeof UpdateUserSchema>;
+export type AdminCreateUserDTO = z.infer<typeof AdminCreateUserSchema>;

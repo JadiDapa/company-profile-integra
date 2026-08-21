@@ -1,10 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
 import TableSorter from "@/components/dashboard/TableSorter";
 import Image from "next/image";
-import { Eye, Pencil, Trash } from "lucide-react";
 import { GalleryType } from "../validators/gallery.validator";
 import { getMediaUrl } from "../getMediaUrl";
+import { deleteGallery } from "@/app/actions/gallery.action";
+import ConfirmDeleteButton from "@/components/dashboard/ConfirmDeleteButton";
+import EditGalleryModal from "@/components/dashboard/Dashboard/gallery/EditGalleryModal";
 
 export const galleryColumn: ColumnDef<GalleryType>[] = [
   {
@@ -35,28 +36,18 @@ export const galleryColumn: ColumnDef<GalleryType>[] = [
     accessorKey: "title",
     accessorFn: (row) => row.title,
     header: ({ column }) => <TableSorter column={column} header="TITLE" />,
-    cell: ({ getValue }) => <Link href={""}>{getValue() as string}</Link>,
+    cell: ({ getValue }) => <span>{getValue() as string}</span>,
   },
   {
     accessorKey: "function",
     header: ({ column }) => <TableSorter column={column} header="ACT" />,
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
-        <Link
-          href={`/activities/${row.original.slug}`}
-          className="text-primary size-5"
-        >
-          <Eye />
-        </Link>
-        <Link
-          href={`/dashboard/activities/update/${row.original.slug}`}
-          className="text-primary size-5"
-        >
-          <Pencil />
-        </Link>
-        <Link href={`${row.original.slug}`} className="text-primary size-5">
-          <Trash />
-        </Link>
+        <EditGalleryModal gallery={row.original} />
+        <ConfirmDeleteButton
+          itemLabel={`Gallery "${row.original.title}"`}
+          onDelete={() => deleteGallery(row.original.id)}
+        />
       </div>
     ),
   },

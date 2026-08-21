@@ -20,7 +20,7 @@ export const ActivityService = {
     const { page, pageSize, search } = ActivitySearchSchema.parse(options);
 
     const where: Prisma.ActivityWhereInput | undefined = search
-      ? { id: { contains: search, mode: "insensitive" } }
+      ? { title: { contains: search, mode: "insensitive" } }
       : undefined;
 
     const orderBy = options.orderBy ?? { createdAt: "desc" };
@@ -57,6 +57,20 @@ export const ActivityService = {
 
   async getById(id: number): Promise<ActivityType | null> {
     const activity = await prisma.activity.findUnique({ where: { id } });
+    if (!activity) return null;
+
+    const [activityWithMedia] = await attachMedia([activity], "ACTIVITY");
+
+    return {
+      ...activityWithMedia,
+      image:
+        activityWithMedia.media.find((m) => m.mediaType === MediaType.IMAGE) ??
+        null,
+    };
+  },
+
+  async getBySlug(slug: string): Promise<ActivityType | null> {
+    const activity = await prisma.activity.findUnique({ where: { slug } });
     if (!activity) return null;
 
     const [activityWithMedia] = await attachMedia([activity], "ACTIVITY");

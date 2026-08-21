@@ -6,7 +6,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { GalleryType } from "@/lib/types/gallery";
+import { GalleryType } from "@/lib/validators/gallery.validator";
+import { getMediaUrl } from "@/lib/getMediaUrl";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
 
@@ -41,7 +42,8 @@ export function MarqueeGallery({ data }: GalleryItemProps) {
               <DialogTrigger asChild>
                 <div className="relative mx-1 h-24 w-40 shrink-0 overflow-hidden rounded-sm lg:mx-2 lg:h-40 lg:w-72">
                   <Image
-                    src={item.image as string}
+                    unoptimized
+                    src={getMediaUrl(item.image?.url as string)}
                     alt={item.title}
                     fill
                     className="object-cover"
@@ -52,7 +54,8 @@ export function MarqueeGallery({ data }: GalleryItemProps) {
               <DialogContent className="bg-background w-[600px] p-3">
                 <div className="relative h-80 w-full overflow-hidden rounded-md">
                   <Image
-                    src={item.image as string}
+                    unoptimized
+                    src={getMediaUrl(item.image?.url as string)}
                     alt={item.title}
                     fill
                     className="object-cover"

@@ -3,6 +3,16 @@
 import { MediaTable, MediaType } from "@/generated/prisma";
 import { MediaService } from "@/lib/services/media.service";
 import { revalidatePath } from "next/cache";
+import { requireRole } from "@/lib/auth";
+
+async function guardMediaType(mediaType: MediaType) {
+  // Evidence photos are uploaded by staff working a ticket; everything else
+  // (customer submissions, gallery/activity images) is created via already
+  // role-gated actions upstream.
+  if (mediaType === MediaType.EVIDENCE) {
+    await requireRole("ADMIN", "TECHNICIAN");
+  }
+}
 
 // export async function getAllMedia() {
 //   return await MediaService.getAll();
@@ -28,6 +38,7 @@ export async function createMedia({
   revalidate?: string;
 }) {
   if (!file) throw new Error("No file provided");
+  await guardMediaType(mediaType);
 
   const media = await MediaService.upload({
     entityId: entityId,
@@ -62,6 +73,7 @@ export async function createManyMedia({
   if (!files || files.length === 0) {
     throw new Error("No files provided");
   }
+  await guardMediaType(mediaType);
 
   const results = [];
 
@@ -91,6 +103,8 @@ export async function deleteMedia({
   mediaId: number;
   revalidate?: string;
 }) {
+  await requireRole("ADMIN", "TECHNICIAN");
+
   await MediaService.delete(mediaId);
 
   if (revalidate) {

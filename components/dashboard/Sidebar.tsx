@@ -18,7 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { User, UserRole } from "@/generated/prisma";
-import { adminItems, settingsItems, technicianItems } from "@/lib/sidebar-menu";
+import { adminItems, technicianItems } from "@/lib/sidebar-menu";
 import { PanelRightOpen, LogOut } from "lucide-react";
 
 // Menu items.
@@ -165,26 +165,6 @@ export default function DashboardSidebar({ user }: { user: User }) {
 
             <SidebarGroupContent>
               <SidebarMenu>
-                {settingsItems.map((item) => {
-                  return (
-                    <SidebarMenuItem
-                      key={item.title}
-                      className="relative rounded-none p-0"
-                    >
-                      <SidebarMenuButton asChild>
-                        <Link
-                          href={item.url}
-                          className="flex h-10 items-center gap-x-4"
-                        >
-                          <item.icon className="size-5 text-white" />
-                          <span className="text-base text-white">
-                            {item.title}
-                          </span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
                 <SidebarMenuItem className="relative rounded-none p-0">
                   <SidebarMenuButton asChild>
                     <div

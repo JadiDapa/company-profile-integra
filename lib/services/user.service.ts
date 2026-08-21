@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import {
   UpdateUserDTO,
   UserSearchSchema,
-  type CreateUserDTO,
+  type AdminCreateUserDTO,
 } from "../validators/user.validator";
 
 export type UserListOptions = {
@@ -76,10 +76,10 @@ export const UserService = {
   },
 
   // CREATE (clean, typed, no validation)
-  async create(data: CreateUserDTO) {
+  async create(data: AdminCreateUserDTO) {
     return await prisma.user.create({
       data: {
-        username: data.username as string,
+        username: data.username,
         role: data.role,
         fullName: data.fullName,
       },

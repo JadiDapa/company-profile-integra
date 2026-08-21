@@ -7,6 +7,9 @@ import {
 } from "@/lib/validators/activity.validator";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+import { requireRole } from "@/lib/auth";
+import { createMedia } from "./media.action";
+import { MediaTable, MediaType } from "@/generated/prisma";
 
 export async function getAllActivities() {
   return await ActivityService.getAll();
@@ -16,26 +19,74 @@ export async function getActivityById(id: number) {
   return await ActivityService.getById(id);
 }
 
-export async function createActivity(
-  input: z.input<typeof CreateActivitySchema>,
-) {
-  const data = CreateActivitySchema.parse({ ...input });
+export async function getActivityBySlug(slug: string) {
+  return await ActivityService.getBySlug(slug);
+}
 
-  await ActivityService.create(data);
+export async function createActivity({
+  activity,
+  file,
+}: {
+  activity: z.input<typeof CreateActivitySchema>;
+  file?: File;
+}) {
+  await requireRole("ADMIN");
 
-  revalidatePath("/activitys");
+  const data = CreateActivitySchema.parse({ ...activity });
+
+  const created = await ActivityService.create(data);
+
+  if (file) {
+    await createMedia({
+      entityId: created.id,
+      file,
+      mediaTable: MediaTable.ACTIVITY,
+      mediaType: MediaType.IMAGE,
+      description: "Activity cover image",
+    });
+  }
+
+  revalidatePath("/activities");
+  revalidatePath("/dashboard/activities");
 }
 
 export async function updateActivity(
   activityId: number,
-  input: z.input<typeof UpdateActivitySchema>,
+  {
+    activity,
+    file,
+  }: {
+    activity: z.input<typeof UpdateActivitySchema>;
+    file?: File;
+  },
 ) {
-  const data = UpdateActivitySchema.parse(input);
+  await requireRole("ADMIN");
+
+  const data = UpdateActivitySchema.parse(activity);
 
   await ActivityService.update(activityId, {
     ...data,
   });
 
-  revalidatePath("/activitys/" + input.slug);
-  revalidatePath("/activitys");
+  if (file) {
+    await createMedia({
+      entityId: activityId,
+      file,
+      mediaTable: MediaTable.ACTIVITY,
+      mediaType: MediaType.IMAGE,
+      description: "Activity cover image",
+    });
+  }
+
+  revalidatePath("/activities");
+  revalidatePath("/dashboard/activities");
+}
+
+export async function deleteActivity(activityId: number) {
+  await requireRole("ADMIN");
+
+  await ActivityService.delete(activityId);
+
+  revalidatePath("/activities");
+  revalidatePath("/dashboard/activities");
 }

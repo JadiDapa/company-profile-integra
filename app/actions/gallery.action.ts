@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 import { createMedia } from "./media.action";
 import { MediaTable, MediaType } from "@/generated/prisma";
+import { requireRole } from "@/lib/auth";
 
 export async function getAllGalleries() {
   return await GalleryService.getAll();
@@ -25,6 +26,8 @@ export async function createGallery({
   gallery: z.input<typeof CreateGallerySchema>;
   file: File;
 }) {
+  await requireRole("ADMIN");
+
   const data = CreateGallerySchema.parse({ ...gallery });
 
   const created = await GalleryService.create(data);
@@ -37,19 +40,31 @@ export async function createGallery({
     description: "Evidence Submission",
   });
 
-  revalidatePath("/galleries");
+  revalidatePath("/gallery");
+  revalidatePath("/dashboard/galleries");
 }
 
 export async function updateGallery(
   galleryId: number,
   input: z.input<typeof UpdateGallerySchema>,
 ) {
+  await requireRole("ADMIN");
+
   const data = UpdateGallerySchema.parse(input);
 
   await GalleryService.update(galleryId, {
     ...data,
   });
 
-  revalidatePath("/galleries/" + input.slug);
-  revalidatePath("/galleries");
+  revalidatePath("/gallery");
+  revalidatePath("/dashboard/galleries");
+}
+
+export async function deleteGallery(galleryId: number) {
+  await requireRole("ADMIN");
+
+  await GalleryService.delete(galleryId);
+
+  revalidatePath("/gallery");
+  revalidatePath("/dashboard/galleries");
 }

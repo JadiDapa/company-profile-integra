@@ -2,7 +2,7 @@ import { MediaType, Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import {
   GallerySearchSchema,
-  GalleryWithImage,
+  GalleryType,
   type CreateGalleryDTO,
   type UpdateGalleryDTO,
 } from "../validators/gallery.validator";
@@ -20,7 +20,7 @@ export const GalleryService = {
     const { page, pageSize, search } = GallerySearchSchema.parse(options);
 
     const where: Prisma.GalleryWhereInput | undefined = search
-      ? { id: { contains: search, mode: "insensitive" } }
+      ? { title: { contains: search, mode: "insensitive" } }
       : undefined;
 
     const orderBy = options.orderBy ?? { createdAt: "desc" };
@@ -44,7 +44,7 @@ export const GalleryService = {
     };
   },
 
-  async getAll(): Promise<GalleryWithImage[]> {
+  async getAll(): Promise<GalleryType[]> {
     const galleries = await prisma.gallery.findMany();
 
     const galleriesWithMedia = await attachMedia(galleries, "GALLERY");
@@ -55,8 +55,8 @@ export const GalleryService = {
     }));
   },
 
-  async getById(id: number): Promise<GalleryWithImage | null> {
-    const gallery = await GalleryService.getById(id);
+  async getById(id: number): Promise<GalleryType | null> {
+    const gallery = await prisma.gallery.findUnique({ where: { id } });
     if (!gallery) return null;
 
     const [galleryWithMedia] = await attachMedia([gallery], "GALLERY");

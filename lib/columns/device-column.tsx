@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
 import TableSorter from "@/components/dashboard/TableSorter";
-import { Eye, Pencil, Trash } from "lucide-react";
 import { DeviceType } from "../validators/device.validator";
+import { deleteDevice } from "@/app/actions/device.action";
+import ConfirmDeleteButton from "@/components/dashboard/ConfirmDeleteButton";
+import EditDeviceModal from "@/components/dashboard/devices/EditDeviceModal";
 
 export const deviceColumn: ColumnDef<DeviceType>[] = [
   {
@@ -22,30 +23,19 @@ export const deviceColumn: ColumnDef<DeviceType>[] = [
 
   {
     accessorKey: "password",
-    accessorFn: (row) => row.password,
     header: ({ column }) => <TableSorter column={column} header="PASSWORD" />,
-    cell: ({ getValue }) => <div>{getValue() as string}</div>,
+    cell: () => <div className="tracking-widest">••••••••</div>,
   },
   {
     accessorKey: "function",
     header: ({ column }) => <TableSorter column={column} header="ACT" />,
     cell: ({ row }) => (
       <div className="flex items-center gap-5">
-        <Link
-          href={`/devices/${row.original.ssid}`}
-          className="text-primary size-3"
-        >
-          <Eye />
-        </Link>
-        <Link
-          href={`/dashboard/devices/update/${row.original.ssid}`}
-          className="text-primary size-3"
-        >
-          <Pencil />
-        </Link>
-        <Link href={`${row.original.ssid}`} className="text-primary size-3">
-          <Trash />
-        </Link>
+        <EditDeviceModal device={row.original} />
+        <ConfirmDeleteButton
+          itemLabel={`Device "${row.original.ssid}"`}
+          onDelete={() => deleteDevice(row.original.id)}
+        />
       </div>
     ),
   },
