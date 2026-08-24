@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import PageHeader from "@/components/root/PageHeader";
 import ServiceSection from "@/components/root/Services/ServiceSection";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description:
+    "Explore Integra Telekom's services: dedicated and broadband internet, network infrastructure, data center colocation, telephone systems, managed services, and software development.",
+  alternates: { canonical: "/services" },
+};
 
 export default function ServicePage() {
   const products = [

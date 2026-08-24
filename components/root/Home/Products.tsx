@@ -1,6 +1,9 @@
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 
+import FadeIn from "@/components/root/FadeIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
+
 const products = [
   {
     icon: "https://cdn1.iconfinder.com/data/icons/web-and-internet-outline/64/web-and-internet-02-512.png",
@@ -25,36 +28,44 @@ const products = [
 export default function Products() {
   return (
     <section
-      id="about"
+      id="products"
       className="relative flex w-full flex-col items-center justify-between gap-12 px-4 py-12 lg:px-24 lg:py-32"
     >
       <div className="flex flex-col items-center space-y-4 text-center">
-        <div className="flex items-center gap-2">
+        <FadeIn className="flex items-center gap-2">
           <ChevronsRight className="text-primary size-4" />
           <p className="text-secondary font-semibold tracking-[2px] uppercase">
             OUR PRODUCTS
           </p>
           <ChevronsLeft className="text-primary size-4" />
-        </div>
-        <h2 className="text-3xl font-medium lg:text-5xl">
-          We Offer Satisfactions
-        </h2>
-        <p className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base">
+        </FadeIn>
+        <FadeIn
+          as="h2"
+          delay={0.1}
+          className="text-3xl font-medium lg:text-5xl"
+        >
+          Built On What Matters Most
+        </FadeIn>
+        <FadeIn
+          as="p"
+          delay={0.2}
+          className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base"
+        >
           Achieve seamless technology and advanced networks with IT solutions
           tailored for modern infrastructure. Each solution supports growth,
           control, and long-term reliability.
-        </p>
+        </FadeIn>
       </div>
-      <div className="grid w-full grid-cols-1 gap-9 px-12 lg:grid-cols-3 lg:gap-12 lg:px-32">
+      <Stagger className="grid w-full grid-cols-1 gap-9 px-12 lg:grid-cols-3 lg:gap-12 lg:px-32">
         {products.map((product, i) => (
-          <div
+          <StaggerItem
             key={i}
             className="via-primary relative flex h-72 w-full cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-tr-4xl rounded-bl-4xl bg-gradient-to-tl from-red-700 to-red-700 p-4 shadow-md transition-all duration-300 hover:scale-105 lg:h-96"
           >
             <div className="relative size-16 lg:size-24">
               <Image
                 src={product.icon}
-                alt={"Illustration"}
+                alt={`${product.title} icon`}
                 fill
                 className="object-contain object-center brightness-0 invert"
               />
@@ -65,9 +76,9 @@ export default function Products() {
             <p className="text-background text-center text-sm">
               {product.description}
             </p>
-          </div>
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
     </section>
   );
 }

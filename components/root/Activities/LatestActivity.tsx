@@ -4,6 +4,8 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ActivityType } from "@/lib/validators/activity.validator";
 import { getMediaUrl } from "@/lib/getMediaUrl";
+import FadeIn from "@/components/root/FadeIn";
+import GrowIn from "@/components/root/GrowIn";
 
 export default async function LatestActivity({
   activity,
@@ -15,15 +17,15 @@ export default async function LatestActivity({
       {/* Header */}
 
       {/* News Hero Section */}
-      <div className="relative z-10">
+      <FadeIn className="relative z-10">
         <h2 className="text-primary text-4xl font-medium">Latest Activity</h2>
-      </div>
+      </FadeIn>
 
       {/* News Content */}
 
       {/* Featured Post */}
       <div className="mt-4">
-        <div className="relative h-[500px] w-full overflow-hidden rounded-lg shadow-xl">
+        <GrowIn className="relative h-[500px] w-full overflow-hidden rounded-lg shadow-xl">
           <Image
             unoptimized
             fill
@@ -52,7 +54,7 @@ export default async function LatestActivity({
               <ArrowRight size={18} />
             </button>
           </div>
-        </div>
+        </GrowIn>
       </div>
 
       {/* Recent Posts */}

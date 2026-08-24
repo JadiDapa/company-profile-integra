@@ -3,6 +3,7 @@ import Link from "next/link";
 import { RiFacebookFill, RiInstagramFill, RiTwitterFill } from "react-icons/ri";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import FadeIn from "@/components/root/FadeIn";
 
 const resourcesLinks = [
   {
@@ -72,7 +73,11 @@ const socialMediaLinks = [
 export default function Footer() {
   return (
     <footer id="footer" className="bg-primary bottom-0 left-0 border-t">
-      <div className="flex flex-col gap-6 px-6 py-8 lg:px-32">
+      <FadeIn
+        as="div"
+        amount={0.1}
+        className="flex flex-col gap-6 px-6 py-8 lg:px-32"
+      >
         <div className="relative mx-auto flex w-full flex-col gap-6">
           <div className="flex w-full flex-col justify-between gap-9 text-sm md:gap-20 lg:flex-row">
             <div className="flex flex-col gap-3">
@@ -143,7 +148,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      </div>
+      </FadeIn>
       <hr />
       <div className="flex flex-col gap-6 px-6 py-4 lg:px-32">
         {" "}

@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { ActivityType } from "@/lib/validators/activity.validator";
 import { getMediaUrl } from "@/lib/getMediaUrl";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
 
 export default function ActivityList({
   activities,
@@ -11,9 +12,9 @@ export default function ActivityList({
   return (
     <section id="activity-list" className="bg-primary/5 px-28 py-12 pb-24">
       {/* <SearchActivityBar setQuery={setQuery} /> */}
-      <div className="grid grid-cols-1 gap-12 pt-6 lg:grid-cols-3">
+      <Stagger className="grid grid-cols-1 gap-12 pt-6 lg:grid-cols-3">
         {activities?.map((activity) => (
-          <div key={activity.id}>
+          <StaggerItem key={activity.id}>
             <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md">
               <Image
                 unoptimized
@@ -32,9 +33,9 @@ export default function ActivityList({
                 {format(activity.createdAt, "dd MMM yyyy")}
               </p>
             </div>
-          </div>
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
     </section>
   );
 }

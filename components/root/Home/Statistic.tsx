@@ -1,3 +1,6 @@
+import FadeIn from "@/components/root/FadeIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
+
 export default function Statistic() {
   return (
     <section
@@ -5,31 +8,44 @@ export default function Statistic() {
       className="relative flex w-full flex-col items-center justify-between gap-16 px-4 py-12 lg:px-24 lg:py-32"
     >
       <div className="flex w-full flex-col items-baseline justify-between space-y-4 lg:flex-row">
-        <h2 className="max-w-xl text-center text-4xl font-medium lg:text-start lg:text-5xl">
+        <FadeIn
+          as="h2"
+          className="max-w-xl text-center text-4xl font-medium lg:text-start lg:text-5xl"
+        >
           We Providing The Best For You
-        </h2>
-        <p className="text-muted-foreground max-w-xl text-center text-sm lg:text-end lg:text-base">
+        </FadeIn>
+        <FadeIn
+          as="p"
+          delay={0.1}
+          direction="right"
+          className="text-muted-foreground max-w-xl text-center text-sm lg:text-end lg:text-base"
+        >
           Achieve seamless technology and advanced networks with IT solutions
-          tailored for modern infrastructure. Lorem ipsum dolor sit amet
-          consectetur.
-        </p>
+          tailored for modern infrastructure, built to grow with your needs.
+        </FadeIn>
       </div>
-      <div className="flex flex-col items-center justify-between gap-16 lg:flex-row lg:gap-24">
-        <StatisticCard
-          value="100%"
-          content="Satisfied Long Term Subscription Customer"
-        />
+      <Stagger className="flex flex-col items-center justify-between gap-16 lg:flex-row lg:gap-24">
+        <StaggerItem>
+          <StatisticCard
+            value="100%"
+            content="Satisfied Long Term Subscription Customer"
+          />
+        </StaggerItem>
         <DottedSeparator />
-        <StatisticCard
-          value="28"
-          content="Provinces Covered by Our Service and Still Growing"
-        />
+        <StaggerItem>
+          <StatisticCard
+            value="28"
+            content="Provinces Covered by Our Service and Still Growing"
+          />
+        </StaggerItem>
         <DottedSeparator />
-        <StatisticCard
-          value="5000+"
-          content="Customers Trusted Us to Provide Their Internet Connection"
-        />
-      </div>
+        <StaggerItem>
+          <StatisticCard
+            value="5000+"
+            content="Customers Trusted Us to Provide Their Internet Connection"
+          />
+        </StaggerItem>
+      </Stagger>
     </section>
   );
 }

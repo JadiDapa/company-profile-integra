@@ -6,6 +6,9 @@ import {
 } from "@/components/ui/accordion";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
+import FadeIn from "@/components/root/FadeIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
+
 const faqs = [
   {
     q: "What internet packages do you offer?",
@@ -37,37 +40,44 @@ export default function FAQ() {
     >
       <div className="relative z-10 flex-1 space-y-4">
         <div className="mb-12 flex flex-col items-center gap-4 text-center">
-          <div className="flex items-center gap-2">
+          <FadeIn className="flex items-center gap-2">
             <ChevronsRight className="text-primary size-4" />
             <p className="text-secondary font-semibold tracking-[2px] uppercase">
               FAQ
             </p>
             <ChevronsLeft className="text-primary size-4" />
-          </div>
-          <h2 className="max-w-2xl text-3xl font-medium lg:text-5xl">
+          </FadeIn>
+          <FadeIn
+            as="h2"
+            delay={0.1}
+            className="max-w-2xl text-3xl font-medium lg:text-5xl"
+          >
             We Hear Every One Of
             <span className="text-primary"> Your Questions</span>
-          </h2>
+          </FadeIn>
         </div>
 
-        <Accordion type="single" collapsible className="w-full space-y-2">
-          {faqs.map((item, i) => (
-            <AccordionItem
-              key={i}
-              className="bg-primary rounded-tl-md rounded-tr-4xl rounded-br-md rounded-bl-4xl px-6 py-2"
-              value={i.toString()}
-            >
-              <AccordionTrigger className="text-background text-base lg:text-lg">
-                <div className="flex items-center gap-6">
-                  <p className="text-4xl font-bold">{i + 1}. </p>
-                  <p>{item.q}</p>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-background">
-                {item.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
+        <Accordion type="single" collapsible className="w-full">
+          <Stagger className="space-y-2">
+            {faqs.map((item, i) => (
+              <StaggerItem key={i}>
+                <AccordionItem
+                  className="bg-primary rounded-tl-md rounded-tr-4xl rounded-br-md rounded-bl-4xl px-6 py-2"
+                  value={i.toString()}
+                >
+                  <AccordionTrigger className="text-background text-base lg:text-lg">
+                    <div className="flex items-center gap-6">
+                      <p className="text-4xl font-bold">{i + 1}. </p>
+                      <p>{item.q}</p>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-background">
+                    {item.a}
+                  </AccordionContent>
+                </AccordionItem>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </Accordion>
       </div>
     </section>

@@ -1,6 +1,9 @@
 import { Stars } from "lucide-react";
 import Image from "next/image";
 
+import AnimatedWords from "@/components/root/AnimatedWords";
+import FadeIn from "@/components/root/FadeIn";
+
 interface PageHeaderProps {
   page: string;
   title: string;
@@ -25,23 +28,31 @@ export default function PageHeader({
 
       <div className="relative z-10 mt-32 flex w-full flex-col items-center justify-center gap-7 px-4 lg:px-28">
         <div className="flex flex-col items-center space-y-2">
-          <div className="text-primary border-primary flex max-w-fit items-center gap-2 rounded-full border-2 px-4 py-0.5">
-            <h3 className="font-medium">{page}</h3>
+          <FadeIn className="text-primary border-primary flex max-w-fit items-center gap-2 rounded-full border-2 px-4 py-0.5">
+            <p className="font-medium">{page}</p>
             <Stars className="size-4" />
-          </div>
-          <h2 className="text-center">
-            <span className="text-3xl font-medium lg:text-start lg:text-4xl/relaxed">
-              {title}
-            </span>
+          </FadeIn>
+          <h1 className="text-center">
+            <AnimatedWords
+              text={title}
+              className="text-3xl font-medium lg:text-start lg:text-4xl/relaxed"
+              delay={0.1}
+            />
             <br />
-            <span className="text-5xl font-medium lg:text-start lg:text-7xl">
-              <span className="text-primary">{accent}</span>
-            </span>
-          </h2>
+            <AnimatedWords
+              text={accent}
+              className="text-primary text-5xl font-medium lg:text-start lg:text-7xl"
+              delay={0.35}
+            />
+          </h1>
         </div>
-        <p className="max-w-2xl text-center text-sm text-slate-700 lg:text-base">
+        <FadeIn
+          as="p"
+          delay={0.5}
+          className="max-w-2xl text-center text-sm text-slate-700 lg:text-base"
+        >
           {subtitle}
-        </p>
+        </FadeIn>
       </div>
     </section>
   );

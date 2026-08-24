@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getAllGalleries } from "@/app/actions/gallery.action";
 import { GalleryType } from "@/lib/validators/gallery.validator";
 import { getMediaUrl } from "@/lib/getMediaUrl";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
 
 export default function Pictures() {
   const [query, setQuery] = useState("");
@@ -35,9 +36,12 @@ export default function Pictures() {
     <section className="bg-primary/5 w-full space-y-12 px-4 py-24 lg:px-28">
       <SearchGalleryBar setQuery={setQuery} />
 
-      <section className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
+      <Stagger
+        as="section"
+        className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3"
+      >
         {filteredGalleries.map((gallery) => (
-          <div
+          <StaggerItem
             key={gallery.id}
             className="group relative w-full overflow-hidden rounded-lg"
           >
@@ -62,9 +66,9 @@ export default function Pictures() {
                 </p>
               </div>
             </div>
-          </div>
+          </StaggerItem>
         ))}
-      </section>
+      </Stagger>
     </section>
   );
 }

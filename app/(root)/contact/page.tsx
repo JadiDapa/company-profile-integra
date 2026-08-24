@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import { Contacts } from "@/components/root/Contact/Contacts";
 import { Message } from "@/components/root/Contact/Message";
 import PageHeader from "@/components/root/PageHeader";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description:
+    "Get in touch with Integra Telekom. Chat, call, or visit us for support and inquiries about our internet and IT solutions.",
+  alternates: { canonical: "/contact" },
+};
 
 export default function Contact() {
   return (

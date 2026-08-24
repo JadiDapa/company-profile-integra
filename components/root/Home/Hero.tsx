@@ -6,6 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import AnimatedWords from "@/components/root/AnimatedWords";
+import FadeIn from "@/components/root/FadeIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
 
 const images = [
   "/images/hero-1.avif",
@@ -46,31 +49,42 @@ export default function Hero() {
       {/* Content */}
       <div className="absolute bottom-0 z-20 flex w-full flex-col items-end justify-between px-4 pb-16 lg:mt-32 lg:flex-row lg:px-24">
         <div className="flex-1">
-          <div className="flex items-center gap-2">
+          <FadeIn className="flex items-center gap-2">
             <ChevronsRight className="text-background size-4" />
             <p className="text-background font-semibold tracking-[2px] uppercase">
               INTERNET PROVIDER
             </p>
-          </div>
+          </FadeIn>
           <h1 className="text-background mt-4">
-            <span className="text-4xl font-medium lg:text-4xl/relaxed">
-              Connecting Every Corner{" "}
-            </span>
+            <AnimatedWords
+              text="Connecting Every Corner"
+              className="text-4xl font-medium lg:text-4xl/relaxed"
+              delay={0.1}
+            />
             <br className="hidden lg:block" />
-            <span className="text-4xl font-medium lg:text-7xl">
-              With #Reliable Internet
-            </span>
+            <AnimatedWords
+              text="With #Reliable Internet"
+              className="text-4xl font-medium lg:text-7xl"
+              delay={0.4}
+            />
           </h1>
-          <p className="text-background mt-4 max-w-2xl lg:mt-8 lg:text-base">
+          <FadeIn
+            as="p"
+            delay={0.7}
+            className="text-background mt-4 max-w-2xl lg:mt-8 lg:text-base"
+          >
             Discover a new level of connectivity with high-speed, reliable
             internet built to support every aspect of your digital lifestyle
-          </p>
+          </FadeIn>
         </div>
 
         {/* Indicators + CTA */}
-        <div className="flex flex-col items-end justify-end gap-12 pb-4">
+        <Stagger
+          delayChildren={0.6}
+          className="flex flex-col items-end justify-end gap-12 pb-4"
+        >
           {/* Dots */}
-          <div className="flex flex-col gap-4">
+          <StaggerItem direction="right" className="flex flex-col gap-4">
             {images.map((_, i) => (
               <button
                 key={i}
@@ -83,15 +97,17 @@ export default function Hero() {
                 )}
               />
             ))}
-          </div>
+          </StaggerItem>
 
           {/* Button */}
-          <Button className="bg-background/20 text-background h-9 w-60 rounded-full border px-24 py-2 transition hover:bg-white hover:text-black">
-            <Link href="/about" className="flex items-center gap-2 text-lg">
-              Discover More <ChevronRight className="size-5" />
-            </Link>
-          </Button>
-        </div>
+          <StaggerItem direction="right">
+            <Button className="bg-background/20 text-background h-9 w-60 rounded-full border px-24 py-2 transition hover:bg-white hover:text-black">
+              <Link href="/about" className="flex items-center gap-2 text-lg">
+                Discover More <ChevronRight className="size-5" />
+              </Link>
+            </Button>
+          </StaggerItem>
+        </Stagger>
       </div>
     </section>
   );

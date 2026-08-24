@@ -2,6 +2,10 @@ import { CheckCircle2, Wrench } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
+import FadeIn from "@/components/root/FadeIn";
+import GrowIn from "@/components/root/GrowIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
+
 interface ServiceSectionProps {
   product: { icon: string; title: string; description: string; list: string[] };
   index: number; // <-- NEW
@@ -21,23 +25,36 @@ export default function ServiceSection({
       {/* Content */}
       <div className="flex-1 space-y-6">
         {/* Tag */}
-        <div className="text-primary border-primary flex max-w-fit items-center gap-2 rounded-full border bg-white/80 px-4 py-1 text-sm font-medium shadow-sm backdrop-blur">
+        <FadeIn
+          direction={isEven ? "left" : "right"}
+          className="text-primary border-primary flex max-w-fit items-center gap-2 rounded-full border bg-white/80 px-4 py-1 text-sm font-medium shadow-sm backdrop-blur"
+        >
           <Wrench className="size-4" />
           <span>Service</span>
-        </div>
+        </FadeIn>
 
         {/* Title + Description */}
-        <h2 className="text-4xl font-bold tracking-tight md:text-5xl">
+        <FadeIn
+          as="h2"
+          direction={isEven ? "left" : "right"}
+          delay={0.1}
+          className="text-4xl font-bold tracking-tight md:text-5xl"
+        >
           {product.title}
-        </h2>
-        <p className="text-muted-foreground max-w-2xl leading-relaxed">
+        </FadeIn>
+        <FadeIn
+          as="p"
+          direction={isEven ? "left" : "right"}
+          delay={0.2}
+          className="text-muted-foreground max-w-2xl leading-relaxed"
+        >
           {product.description}
-        </p>
+        </FadeIn>
 
         {/* Feature list */}
-        <div className="grid gap-3 sm:grid-cols-2">
+        <Stagger delayChildren={0.3} className="grid gap-3 sm:grid-cols-2">
           {product.list.map((item, i) => (
-            <div
+            <StaggerItem
               key={i}
               className="flex items-center gap-3 overflow-hidden rounded-md bg-white shadow-sm transition hover:shadow-md"
             >
@@ -48,30 +65,33 @@ export default function ServiceSection({
                   {item}
                 </p>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
 
       {/* Image */}
-      <div className="relative flex flex-1 items-center justify-center px-12">
+      <GrowIn
+        delay={0.15}
+        className="relative flex flex-1 items-center justify-center px-12"
+      >
         <div
           className={`border-primary absolute ${isEven ? "left-0" : "right-0"} -top-8 z-20 flex size-36 flex-col items-center justify-center gap-0.5 rounded-full border-6 bg-white p-4 text-center shadow-2xl`}
         >
           <div className="relative size-14 lg:size-24">
             <Image
               src={product.icon}
-              alt={"Illustration"}
+              alt={`${product.title} icon`}
               fill
               className="object-contain object-center"
             />
           </div>
         </div>
 
-        <div className="relative z-10 h-80 w-[480px] overflow-hidden rounded-md shadow-xl">
+        <div className="relative z-10 h-80 w-full max-w-[480px] overflow-hidden rounded-md shadow-xl">
           <Image
             src={"/images/illust-1.jpg"}
-            alt="Illustration"
+            alt="Engineer reviewing technical infrastructure on a laptop"
             fill
             className="object-cover object-center"
           />
@@ -79,9 +99,9 @@ export default function ServiceSection({
 
         {/* Background accent */}
         {!isEven && (
-          <div className="absolute -top-12 right-0 z-0 h-60 w-[400px] rounded-md" />
+          <div className="absolute -top-12 right-0 z-0 h-60 w-full max-w-[400px] rounded-md" />
         )}
-      </div>
+      </GrowIn>
     </section>
   );
 }

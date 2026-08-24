@@ -1,6 +1,10 @@
 import { CheckCircleIcon, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 
+import FadeIn from "@/components/root/FadeIn";
+import GrowIn from "@/components/root/GrowIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
+
 export default function About() {
   return (
     <section
@@ -8,43 +12,56 @@ export default function About() {
       className="relative my-24 flex w-full flex-col gap-24 lg:my-32 lg:flex-row lg:gap-0"
     >
       <div className="text-background via-primary order-2 flex h-[520px] flex-3 flex-col justify-center gap-4 bg-gradient-to-tl from-red-700 to-red-700 py-32 ps-4 lg:order-1 lg:py-0 lg:ps-28">
-        <div className="flex items-center gap-2">
+        <FadeIn className="flex items-center gap-2">
           <ChevronsRight className="text-background size-4" />
           <p className="text-background font-semibold tracking-[2px] uppercase">
             ABOUT US
           </p>
-        </div>
-        <h2 className="max-w-xl text-3xl font-medium lg:text-5xl">
+        </FadeIn>
+        <FadeIn
+          as="h2"
+          delay={0.1}
+          className="max-w-xl text-3xl font-medium lg:text-5xl"
+        >
           Innovation Shape The Future
-        </h2>
-        <p className="text-background max-w-xs text-sm lg:max-w-xl lg:text-base">
+        </FadeIn>
+        <FadeIn
+          as="p"
+          delay={0.2}
+          className="text-background max-w-xs text-sm lg:max-w-xl lg:text-base"
+        >
           We are dedicated to creating innovative solutions that connect people
           and empower businesses. By combining cutting-edge technology with a
           customer-first approach, we deliver reliable and efficient services
-        </p>
-        <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        </FadeIn>
+        <Stagger
+          delayChildren={0.3}
+          className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2"
+        >
           {[
             "Deliver innovative and reliable solutions",
             "Ensure seamless connectivity for all users",
             "Focus on customer satisfaction and support",
             "Continuously improve with cutting-edge technology",
           ].map((text, i) => (
-            <div key={i} className="flex items-center gap-2 lg:items-start">
+            <StaggerItem
+              key={i}
+              className="flex items-center gap-2 lg:items-start"
+            >
               <CheckCircleIcon className="size-3 rounded-xs lg:mt-1 lg:size-5" />
               <p className="text-background text-sm lg:text-base">{text}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
-      <div className="relative order-1 flex h-[520px] w-full flex-2 items-center justify-center px-12 lg:order-2 lg:w-auto">
-        {/* <div className="absolute inset-0 z-10 bg-red-500/20" /> */}
+      <GrowIn className="relative order-1 flex h-[520px] w-full flex-2 items-center justify-center px-12 lg:order-2 lg:w-auto">
         <Image
           src={"/images/about-1.jpg"}
-          alt="Illustration"
+          alt="Business handshake representing an Integra Telekom partnership"
           fill
           className="object-cover object-center"
         />
-      </div>
+      </GrowIn>
     </section>
   );
 }

@@ -3,13 +3,15 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import GrowIn from "@/components/root/GrowIn";
+
 export default function CTA() {
   return (
     <section
       id="CTA"
       className="relative w-full px-4 py-24 lg:flex-row lg:px-28"
     >
-      <div className="via-primary relative flex w-full flex-col items-center justify-between overflow-hidden rounded-2xl border bg-gradient-to-tl from-red-700 to-red-700 px-6 py-12 text-center text-white lg:flex-row lg:px-24 lg:py-24 lg:text-start">
+      <GrowIn className="via-primary relative flex w-full flex-col items-center justify-between overflow-hidden rounded-2xl border bg-gradient-to-tl from-red-700 to-red-700 px-6 py-12 text-center text-white lg:flex-row lg:px-24 lg:py-24 lg:text-start">
         <div className="relative z-20 flex w-full flex-col gap-5">
           <h2 className="text-4xl font-medium">Want To Get Started?</h2>
           <p className="text-background max-w-xl">
@@ -34,7 +36,7 @@ export default function CTA() {
             className="object-contain object-center brightness-0 invert"
           />
         </div>
-      </div>
+      </GrowIn>
     </section>
   );
 }

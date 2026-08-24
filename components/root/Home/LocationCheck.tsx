@@ -1,38 +1,57 @@
 import { ChevronsLeft, ChevronsRight, MapPin, Search } from "lucide-react";
 import Image from "next/image";
 
+import FadeIn from "@/components/root/FadeIn";
+import GrowIn from "@/components/root/GrowIn";
+
 export default function LocationCheck() {
   return (
     <section
-      id="statistic"
+      id="location-check"
       className="relative flex w-full flex-col items-center justify-between gap-16 px-4 py-12 lg:flex-row lg:px-24 lg:py-32"
     >
-      <div className="flex-2">
+      <GrowIn className="flex-2">
         <div className="relative mx-auto size-80 overflow-hidden lg:size-96">
           <Image
             src={"/images/loca-illust.jpg"}
-            alt="Illustration"
+            alt="People connected across devices via wireless internet"
             fill
             className="object-contain object-center"
           />
         </div>
-      </div>
+      </GrowIn>
       <div className="flex flex-3 flex-col items-end space-y-4">
-        <div className="flex w-full items-center justify-center gap-2 lg:w-auto lg:justify-start">
+        <FadeIn
+          direction="right"
+          className="flex w-full items-center justify-center gap-2 lg:w-auto lg:justify-start"
+        >
           <ChevronsRight className="text-primary size-4 lg:hidden" />
           <p className="text-secondary font-semibold tracking-[2px] uppercase">
             LOCATION CHECK
           </p>
           <ChevronsLeft className="text-primary size-4" />
-        </div>
-        <h2 className="max-w-2xl text-center text-3xl font-medium lg:text-end lg:text-5xl">
+        </FadeIn>
+        <FadeIn
+          as="h2"
+          direction="right"
+          delay={0.1}
+          className="max-w-2xl text-center text-3xl font-medium lg:text-end lg:text-5xl"
+        >
           Enjoy Best Unlimited Internet Connection In Your Area
-        </h2>
-        <p className="text-muted-foreground max-w-2xl text-center text-sm lg:text-end lg:text-base">
+        </FadeIn>
+        <FadeIn
+          as="p"
+          direction="right"
+          delay={0.2}
+          className="text-muted-foreground max-w-2xl text-center text-sm lg:text-end lg:text-base"
+        >
           Check if our reliable internet services are available in your area by
           entering your address below. Stay connected with us wherever you are!
-        </p>
-        <div className="via-primary mt-8 w-full rounded-lg border bg-gradient-to-tl from-red-700 to-red-700 p-4">
+        </FadeIn>
+        <FadeIn
+          delay={0.3}
+          className="via-primary mt-8 w-full rounded-lg border bg-gradient-to-tl from-red-700 to-red-700 p-4"
+        >
           <div className="flex justify-between">
             <div className="flex items-center gap-2">
               <MapPin className="text-background size-5" />
@@ -67,32 +86,8 @@ export default function LocationCheck() {
               Check
             </button>
           </div>
-        </div>
+        </FadeIn>
       </div>
     </section>
-  );
-}
-
-interface StatisticCardProps {
-  value: string;
-  content: string;
-}
-
-export function StatisticCard({ value, content }: StatisticCardProps) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4 text-center">
-      <p className="text-primary text-5xl font-semibold">{value}</p>
-      <p className="text-muted-foreground max-w-80">{content}</p>
-    </div>
-  );
-}
-
-export function DottedSeparator({ dots }: { dots?: number }) {
-  return (
-    <div className="flex flex-col gap-2">
-      {[...Array(dots || 6)].map((_, i) => (
-        <div key={i} className="bg-primary/50 h-3 w-[3px] rounded-full" />
-      ))}
-    </div>
   );
 }

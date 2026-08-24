@@ -4,6 +4,9 @@ import { getMediaUrl } from "@/lib/getMediaUrl";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import FadeIn from "@/components/root/FadeIn";
+import GrowIn from "@/components/root/GrowIn";
+import { Stagger, StaggerItem } from "@/components/root/Stagger";
 
 export default async function Activities() {
   const activities = await getAllActivities();
@@ -14,28 +17,36 @@ export default async function Activities() {
       className="relative flex w-full flex-col items-center justify-between px-4 py-24 lg:px-28"
     >
       <div className="mb-12 flex flex-col items-center gap-4 text-center">
-        <div className="flex items-center gap-2">
+        <FadeIn className="flex items-center gap-2">
           <ChevronsRight className="text-primary size-4" />
           <p className="text-secondary font-semibold tracking-[2px] uppercase">
             ACTIVITY REPORT
           </p>
           <ChevronsLeft className="text-primary size-4" />
-        </div>
-        <h2 className="text-3xl font-medium lg:text-5xl">
+        </FadeIn>
+        <FadeIn
+          as="h2"
+          delay={0.1}
+          className="text-3xl font-medium lg:text-5xl"
+        >
           Our Team
           <span className="text-primary"> Activities</span>
-        </h2>
-        <p className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base">
+        </FadeIn>
+        <FadeIn
+          as="p"
+          delay={0.2}
+          className="text-muted-foreground mx-auto max-w-2xl text-sm lg:text-base"
+        >
           Stay updated with the latest activities and events organized by our
           dedicated team. From community outreach programs to exciting
           workshops, explore how we are making a difference together.
-        </p>
+        </FadeIn>
       </div>
       {activities.length > 0 && (
         <div className="w-full space-y-12">
           {/* Main Article */}
           <div className="relative hidden w-full gap-9 overflow-hidden max-lg:hover:cursor-pointer lg:col-span-2 lg:flex lg:flex-row">
-            <div className="relative h-96 flex-1 cursor-pointer overflow-hidden md:h-80">
+            <GrowIn className="relative h-96 flex-1 cursor-pointer overflow-hidden md:h-80">
               <Image
                 unoptimized
                 src={getMediaUrl(activities[0].image?.url as string)}
@@ -44,17 +55,21 @@ export default async function Activities() {
                 className="object-cover object-center"
                 priority
               />
-            </div>
-            <div className="flex-1 space-y-6 p-2 lg:relative lg:block lg:p-0">
-              <h1 className="lg:text-foreground line-clamp-2 cursor-pointer text-lg font-medium text-white transition hover:underline lg:text-5xl lg:font-semibold">
+            </GrowIn>
+            <FadeIn
+              direction="right"
+              delay={0.15}
+              className="flex-1 space-y-6 p-2 lg:relative lg:block lg:p-0"
+            >
+              <h3 className="lg:text-foreground line-clamp-2 cursor-pointer text-lg font-medium text-white transition hover:underline lg:text-5xl lg:font-semibold">
                 {activities[0].title}
-              </h1>
+              </h3>
               <p className="text-muted-foreground line-clamp-3 text-sm lg:text-base">
                 {activities[0].content}
               </p>
               <div className="flex cursor-pointer items-center gap-2 lg:mb-4">
                 <Link
-                  href="/olympics"
+                  href="/activities"
                   className="text-primary text-xs capitalize hover:underline lg:text-sm"
                 >
                   {activities[0].category}
@@ -63,14 +78,14 @@ export default async function Activities() {
                   {formatDate(activities[0].createdAt.toString())}
                 </span>
               </div>
-            </div>
+            </FadeIn>
           </div>
 
           {/* Right Side Articles */}
-          <div className="grid grid-cols-1 gap-9 space-y-6 lg:grid-cols-3">
+          <Stagger className="grid grid-cols-1 gap-9 space-y-6 lg:grid-cols-3">
             {/* Article 1 */}
             {activities.map((activity) => (
-              <div
+              <StaggerItem
                 key={activity.id}
                 className="relative w-full cursor-pointer space-y-2"
               >
@@ -86,7 +101,7 @@ export default async function Activities() {
                 <div className="flex flex-1 flex-col space-y-1 p-0 lg:relative lg:block">
                   <div className="order-2 flex items-center gap-2 lg:order-1">
                     <Link
-                      href="/olympics"
+                      href="/activities"
                       className="text-primary text-sm capitalize hover:underline"
                     >
                       {activity.category}
@@ -99,9 +114,9 @@ export default async function Activities() {
                     {activity.title}
                   </h2>
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       )}
     </section>
